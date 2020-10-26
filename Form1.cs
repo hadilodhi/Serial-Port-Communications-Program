@@ -270,4 +270,3 @@ namespace Serial_Port_Communications_Program
         }
     }
 }
-//testing
