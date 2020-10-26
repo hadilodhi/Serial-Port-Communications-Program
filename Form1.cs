@@ -243,5 +243,19 @@ namespace Serial_Port_Communications_Program
         {
             System.IO.File.WriteAllText(Dir, "");
         }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            groupBox2.Width = panel1.Width - 220;
+            groupBox2.Height = ((panel1.Height - 533) / 2) + 250;
+            groupBox4.Width = panel1.Width - 220;
+            groupBox4.Height = ((panel1.Height - 533) / 2) + 250;
+            tBoxSend.Width = groupBox2.Width - 13;
+            tBoxSend.Height = groupBox2.Height - 132;
+            tBoxReceive.Width = groupBox4.Width - 13;
+            tBoxReceive.Height = groupBox4.Height- 132;
+            groupBox4.Top = groupBox4.Height + 20;
+
+        }
     }
 }
