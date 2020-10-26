@@ -245,4 +245,3 @@ namespace Serial_Port_Communications_Program
         }
     }
 }
-// This is Backup for the Project
