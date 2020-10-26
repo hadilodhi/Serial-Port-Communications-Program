@@ -35,6 +35,17 @@ namespace Serial_Port_Communications_Program
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            groupBox2.Width = 383;
+            groupBox2.Height = 210;
+            groupBox4.Width = 383;
+            groupBox4.Height = 210;
+            tBoxSend.Width = 370;
+            tBoxSend.Height = 108;
+            tBoxReceive.Width = 370;
+            tBoxReceive.Height = 108;
+            groupBox4.Top = 225;
+
+
             string[] ports = SerialPort.GetPortNames();
             cBoxComport.Items.AddRange(ports);
             serialPort1.NewLine = "^";
@@ -247,13 +258,13 @@ namespace Serial_Port_Communications_Program
         private void Form1_Resize(object sender, EventArgs e)
         {
             groupBox2.Width = panel1.Width - 220;
-            groupBox2.Height = ((panel1.Height - 533) / 2) + 250;
+            groupBox2.Height = ((panel1.Height - 533) / 2) + 255;
             groupBox4.Width = panel1.Width - 220;
-            groupBox4.Height = ((panel1.Height - 533) / 2) + 250;
+            groupBox4.Height = ((panel1.Height - 533) / 2) + 255;
             tBoxSend.Width = groupBox2.Width - 13;
-            tBoxSend.Height = groupBox2.Height - 132;
+            tBoxSend.Height = groupBox2.Height - 102;
             tBoxReceive.Width = groupBox4.Width - 13;
-            tBoxReceive.Height = groupBox4.Height- 132;
+            tBoxReceive.Height = groupBox4.Height- 102;
             groupBox4.Top = groupBox4.Height + 20;
 
         }
