@@ -11,6 +11,7 @@ using System.IO.Ports;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Serial_Port_Communications_Program
 {
@@ -108,16 +109,23 @@ namespace Serial_Port_Communications_Program
                 }
                 else
                 {
-                    stopwatch.Start();
 
                     if (cBoxNewline.Checked)
                     {
+                        serialPort1.Write("$");
+                        Thread.Sleep(1);
                         serialPort1.WriteLine(SendData);
+                        Thread.Sleep(1);
+                        serialPort1.Write("$$");
                     }
 
                     else
                     {
+                        serialPort1.Write("$");
+                        Thread.Sleep(1);
                         serialPort1.Write(SendData);
+                        Thread.Sleep(1);
+                        serialPort1.Write("$$");
                     }
                 }
                 if (cBoxSave.Checked)
@@ -148,7 +156,11 @@ namespace Serial_Port_Communications_Program
 
         private void ShowData(object sender, EventArgs e)
         {
-            if (ReceiveData.Contains("$"))
+            if (ReceiveData == "$")
+            {
+                stopwatch.Start();
+            }
+            else if (ReceiveData == "$$")
             {
                 stopwatch.Stop();
                 elapsedms = stopwatch.ElapsedMilliseconds;
@@ -156,31 +168,22 @@ namespace Serial_Port_Communications_Program
                 {
                     elapsedms = 1;
                 }
-                lTime.Text = (elapsedms / 2).ToString() + " ms";
-                ReceiveDatal = ReceiveData.Length - 1;
+                elapsedms -= 2;
+                lTime.Text = elapsedms.ToString() + " ms";
                 lChar.Text = (ReceiveDatal).ToString();
-                ReceiveDatal = ReceiveDatal * 8;
-                elapseds = elapsedms / 2000;
-                Rate = ReceiveDatal / elapseds;
-                if (Rate <= 1000)
-                {
-                    RateS = Rate.ToString("#");
-                    lRate.Text = RateS + " b/s";
-                }
-                else if (Rate <= 1000000)
-                {
-                    Rate = Rate / 1000;
-                    RateS = Rate.ToString("#");
-                    lRate.Text = RateS + " Kb/s";
-                }
-                else if (Rate <= 1000000000)
-                {
-                    Rate = Rate / 1000000;
-                    RateS = Rate.ToString("#");
-                    lRate.Text = RateS + " Mb/s";
-                }
-
+                SendBack = "$$$" + elapsedms + "/" + ReceiveDatal;
+                CalcRate();
+                serialPort1.Write(SendBack);
                 stopwatch.Reset();
+            }
+            else if (ReceiveData.Contains("$$$"))
+            {
+                ReceiveData = ReceiveData.Replace("$$$", "");
+                ReceiveDatal = Convert.ToDecimal(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
+                elapsedms = Convert.ToDecimal(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
+                lTime.Text = elapsedms.ToString() + " ms";
+                lChar.Text = (ReceiveDatal).ToString();
+                CalcRate();
             }
             else if (ReceiveData.Contains("^"))
             {
@@ -203,6 +206,7 @@ namespace Serial_Port_Communications_Program
 
             void Output()
             {
+                ReceiveDatal = ReceiveData.Length;
 
                 if (cBoxCleardata.Checked)
                 {
@@ -227,10 +231,34 @@ namespace Serial_Port_Communications_Program
                         MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
 
-                SendBack = ReceiveData += "$";
-                serialPort1.Write(SendBack);
-
+            void CalcRate()
+            {
+                if (elapsedms == 0)
+                {
+                    elapsedms = 1;
+                }
+                elapseds = elapsedms / 1000;
+                ReceiveDatal *= 8;
+                Rate = ReceiveDatal / elapseds;
+                if (Rate <= 1000)
+                {
+                    RateS = Rate.ToString("#");
+                    lRate.Text = RateS + " b/s";
+                }
+                else if (Rate <= 1000000)
+                {
+                    Rate = Rate / 1000;
+                    RateS = Rate.ToString("#");
+                    lRate.Text = RateS + " Kb/s";
+                }
+                else if (Rate <= 1000000000)
+                {
+                    Rate = Rate / 1000000;
+                    RateS = Rate.ToString("#");
+                    lRate.Text = RateS + " Mb/s";
+                }
             }
         }
 
