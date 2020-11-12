@@ -29,6 +29,7 @@ namespace Serial_Port_Communications_Program
         decimal ReceiveDatal;
         decimal Rate;
         string RateS;
+        int Delayms;
 
         public Form1()
         {
@@ -62,6 +63,7 @@ namespace Serial_Port_Communications_Program
                 serialPort1.DataBits = Convert.ToInt32(cBoxDatabits.Text);
                 serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cBoxStopbits.Text);
                 serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), cBoxParitybits.Text);
+                Delayms = Convert.ToInt32(tBoxDelay.Text);
 
                 serialPort1.Open();
                 lStatus.Text = "Connected";
@@ -72,8 +74,7 @@ namespace Serial_Port_Communications_Program
                 cBoxDatabits.Enabled = false;
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
-
-
+                tBoxDelay.Enabled = false;
             }
 
             catch (Exception err)
@@ -95,6 +96,7 @@ namespace Serial_Port_Communications_Program
                 cBoxDatabits.Enabled = true;
                 cBoxStopbits.Enabled = true;
                 cBoxParitybits.Enabled = true;
+                tBoxDelay.Enabled = true;
             }
         }
 
@@ -113,18 +115,18 @@ namespace Serial_Port_Communications_Program
                     if (cBoxNewline.Checked)
                     {
                         serialPort1.Write("$");
-                        Thread.Sleep(1);
+                        Thread.Sleep(Delayms);
                         serialPort1.WriteLine(SendData);
-                        Thread.Sleep(1);
+                        Thread.Sleep(Delayms);
                         serialPort1.Write("$$");
                     }
 
                     else
                     {
                         serialPort1.Write("$");
-                        Thread.Sleep(1);
+                        Thread.Sleep(Delayms);
                         serialPort1.Write(SendData);
-                        Thread.Sleep(1);
+                        Thread.Sleep(Delayms);
                         serialPort1.Write("$$");
                     }
                 }
@@ -168,7 +170,7 @@ namespace Serial_Port_Communications_Program
                 {
                     elapsedms = 1;
                 }
-                elapsedms -= 2;
+                elapsedms -= Delayms * 2;
                 lTime.Text = elapsedms.ToString() + " ms";
                 lChar.Text = (ReceiveDatal).ToString();
                 SendBack = "$$$" + elapsedms + "/" + ReceiveDatal;
