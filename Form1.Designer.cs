@@ -32,6 +32,7 @@
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.tBoxSend = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.tBoxLength = new System.Windows.Forms.Label();
             this.cBoxNewline = new System.Windows.Forms.CheckBox();
             this.bClear = new System.Windows.Forms.Button();
             this.bSend = new System.Windows.Forms.Button();
@@ -69,6 +70,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tBoxDelay = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cBoxRestart = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -91,9 +93,11 @@
             this.tBoxSend.Name = "tBoxSend";
             this.tBoxSend.Size = new System.Drawing.Size(490, 118);
             this.tBoxSend.TabIndex = 0;
+            this.tBoxSend.TextChanged += new System.EventHandler(this.tBoxSend_TextChanged);
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.tBoxLength);
             this.groupBox3.Controls.Add(this.cBoxNewline);
             this.groupBox3.Controls.Add(this.bClear);
             this.groupBox3.Controls.Add(this.bSend);
@@ -104,6 +108,15 @@
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             // 
+            // tBoxLength
+            // 
+            this.tBoxLength.AutoSize = true;
+            this.tBoxLength.Location = new System.Drawing.Point(427, 39);
+            this.tBoxLength.Name = "tBoxLength";
+            this.tBoxLength.Size = new System.Drawing.Size(16, 17);
+            this.tBoxLength.TabIndex = 3;
+            this.tBoxLength.Text = "0";
+            // 
             // cBoxNewline
             // 
             this.cBoxNewline.AutoSize = true;
@@ -113,6 +126,7 @@
             this.cBoxNewline.TabIndex = 2;
             this.cBoxNewline.Text = "New Line";
             this.cBoxNewline.UseVisualStyleBackColor = true;
+            this.cBoxNewline.CheckedChanged += new System.EventHandler(this.cBoxNewline_CheckedChanged);
             // 
             // bClear
             // 
@@ -169,7 +183,7 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.lStatus);
-            this.groupBox7.Location = new System.Drawing.Point(118, 22);
+            this.groupBox7.Location = new System.Drawing.Point(118, 9);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(142, 91);
             this.groupBox7.TabIndex = 4;
@@ -188,6 +202,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.cBoxRestart);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.bDisconnect);
             this.groupBox6.Controls.Add(this.bConnect);
@@ -204,6 +219,7 @@
             this.tBoxReceive.Name = "tBoxReceive";
             this.tBoxReceive.Size = new System.Drawing.Size(490, 118);
             this.tBoxReceive.TabIndex = 0;
+            this.tBoxReceive.TextChanged += new System.EventHandler(this.tBoxReceive_TextChanged);
             // 
             // groupBox5
             // 
@@ -505,6 +521,18 @@
             this.panel1.Size = new System.Drawing.Size(800, 533);
             this.panel1.TabIndex = 5;
             // 
+            // cBoxRestart
+            // 
+            this.cBoxRestart.AutoSize = true;
+            this.cBoxRestart.Checked = true;
+            this.cBoxRestart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cBoxRestart.Location = new System.Drawing.Point(147, 104);
+            this.cBoxRestart.Name = "cBoxRestart";
+            this.cBoxRestart.Size = new System.Drawing.Size(76, 21);
+            this.cBoxRestart.TabIndex = 5;
+            this.cBoxRestart.Text = "Restart";
+            this.cBoxRestart.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -523,6 +551,7 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -578,6 +607,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tBoxDelay;
+        private System.Windows.Forms.Label tBoxLength;
+        private System.Windows.Forms.CheckBox cBoxRestart;
     }
 }
 

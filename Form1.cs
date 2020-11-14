@@ -48,9 +48,8 @@ namespace Serial_Port_Communications_Program
             groupBox4.Top = 225;
 
 
-            string[] ports = SerialPort.GetPortNames();
-            cBoxComport.Items.AddRange(ports);
-            serialPort1.NewLine = "^";
+            cBoxComport.Items.AddRange(SerialPort.GetPortNames());
+            serialPort1.NewLine = Convert.ToChar(1).ToString();
             bDisconnect.Enabled = false;
         }
 
@@ -64,6 +63,12 @@ namespace Serial_Port_Communications_Program
                 serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cBoxStopbits.Text);
                 serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), cBoxParitybits.Text);
                 Delayms = Convert.ToInt32(tBoxDelay.Text);
+
+                serialPort1.BaudRate = 9600;
+                serialPort1.Open();
+                serialPort1.Write(cBoxBaudrate.Text);
+                serialPort1.Close();
+                serialPort1.BaudRate = Convert.ToInt32(cBoxBaudrate.Text);
 
                 serialPort1.Open();
                 lStatus.Text = "Connected";
@@ -87,6 +92,9 @@ namespace Serial_Port_Communications_Program
         {
             if (serialPort1.IsOpen)
             {
+
+                serialPort1.Write(Convert.ToChar(126).ToString());
+
                 serialPort1.Close();
                 lStatus.Text = "Disconnected";
                 bConnect.Enabled = true;
@@ -97,6 +105,16 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = true;
                 cBoxParitybits.Enabled = true;
                 tBoxDelay.Enabled = true;
+
+                Thread.Sleep(Delayms);
+                if (cBoxRestart.Checked)
+                {
+                    Application.Restart();
+                }
+                else
+                {
+                    Application.Exit();
+                }
             }
         }
 
@@ -114,20 +132,20 @@ namespace Serial_Port_Communications_Program
 
                     if (cBoxNewline.Checked)
                     {
-                        serialPort1.Write("$");
+                        serialPort1.Write(Convert.ToChar(2).ToString());
                         Thread.Sleep(Delayms);
                         serialPort1.WriteLine(SendData);
                         Thread.Sleep(Delayms);
-                        serialPort1.Write("$$");
+                        serialPort1.Write(Convert.ToChar(3).ToString());
                     }
 
                     else
                     {
-                        serialPort1.Write("$");
+                        serialPort1.Write(Convert.ToChar(2).ToString());
                         Thread.Sleep(Delayms);
                         serialPort1.Write(SendData);
                         Thread.Sleep(Delayms);
-                        serialPort1.Write("$$");
+                        serialPort1.Write(Convert.ToChar(3).ToString());
                     }
                 }
                 if (cBoxSave.Checked)
@@ -151,20 +169,23 @@ namespace Serial_Port_Communications_Program
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
 
-            ReceiveData = serialPort1.ReadExisting();
+            ReceiveData += serialPort1.ReadExisting();
             this.Invoke(new EventHandler(ShowData));
 
         }
 
         private void ShowData(object sender, EventArgs e)
         {
-            if (ReceiveData == "$")
+            if (ReceiveData.Contains(Convert.ToChar(2).ToString()))
             {
                 stopwatch.Start();
+                ReceiveData = "";
             }
-            else if (ReceiveData == "$$")
+            else if (ReceiveData.Contains(Convert.ToChar(3).ToString()))
             {
                 stopwatch.Stop();
+                ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
+                Processing();
                 elapsedms = stopwatch.ElapsedMilliseconds;
                 if (elapsedms == 0)
                 {
@@ -173,43 +194,54 @@ namespace Serial_Port_Communications_Program
                 elapsedms -= Delayms * 2;
                 lTime.Text = elapsedms.ToString() + " ms";
                 lChar.Text = (ReceiveDatal).ToString();
-                SendBack = "$$$" + elapsedms + "/" + ReceiveDatal;
+                SendBack = elapsedms + "/" + ReceiveDatal + Convert.ToChar(4).ToString();
                 CalcRate();
                 serialPort1.Write(SendBack);
                 stopwatch.Reset();
+                ReceiveData = "";
             }
-            else if (ReceiveData.Contains("$$$"))
+            else if (ReceiveData.Contains(Convert.ToChar(4).ToString()))
             {
-                ReceiveData = ReceiveData.Replace("$$$", "");
+                ReceiveData = ReceiveData.Replace(Convert.ToChar(4).ToString(), "");
                 ReceiveDatal = Convert.ToDecimal(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
                 elapsedms = Convert.ToDecimal(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
                 lTime.Text = elapsedms.ToString() + " ms";
                 lChar.Text = (ReceiveDatal).ToString();
                 CalcRate();
+                ReceiveData = "";
             }
-            else if (ReceiveData.Contains("^"))
+            //else
+            //{
+               // Processing();
+            //}
+            
+            void Processing()
             {
-                if (cBoxCleardata.Checked || tBoxReceive.Text == "")
+                if (ReceiveData.Contains(Convert.ToChar(1).ToString()))
                 {
-                    ReceiveData = ReceiveData.Replace("^", "");
-                    Output();
+                    if (cBoxCleardata.Checked || tBoxReceive.Text == "")
+                    {
+                        ReceiveData = ReceiveData.Replace(Convert.ToChar(1).ToString(), "");
+                        ReceiveDatal = ReceiveData.Length + 2;
+                        Output();
+                    }
+                    else
+                    {
+                        ReceiveData = ReceiveData.Replace(Convert.ToChar(1).ToString(), "");
+                        ReceiveData = string.Concat("" + System.Environment.NewLine, ReceiveData);
+                        ReceiveDatal = ReceiveData.Length;
+                        Output();
+                    }
                 }
                 else
                 {
-                    ReceiveData = ReceiveData.Replace("^", "");
-                    ReceiveData = string.Concat("" + System.Environment.NewLine, ReceiveData);
+                    ReceiveDatal = ReceiveData.Length;
                     Output();
                 }
-            }
-            else
-            {
-                Output();
             }
 
             void Output()
             {
-                ReceiveDatal = ReceiveData.Length;
-
                 if (cBoxCleardata.Checked)
                 {
                     tBoxReceive.Text = ReceiveData;
@@ -297,6 +329,37 @@ namespace Serial_Port_Communications_Program
             tBoxReceive.Height = groupBox4.Height- 102;
             groupBox4.Top = groupBox4.Height + 20;
 
+        }
+
+        private void tBoxSend_TextChanged(object sender, EventArgs e)
+        {
+            tBoxSend.ScrollBars = ScrollBars.Vertical;
+            if (cBoxNewline.Checked)
+            {
+                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength + 2);
+            }
+            else
+            {
+                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
+            }
+                
+        }
+
+        private void tBoxReceive_TextChanged(object sender, EventArgs e)
+        {
+            tBoxReceive.ScrollBars = ScrollBars.Vertical;
+        }
+
+        private void cBoxNewline_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cBoxNewline.Checked)
+            {
+                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength + 2);
+            }
+            else
+            {
+                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
+            }
         }
     }
 }
