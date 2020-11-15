@@ -66,6 +66,8 @@ namespace Serial_Port_Communications_Program
 
                 serialPort1.BaudRate = 9600;
                 serialPort1.Open();
+                serialPort1.Write(tBoxSample.Text);
+                Thread.Sleep(2000);
                 serialPort1.Write(cBoxBaudrate.Text);
                 serialPort1.Close();
                 serialPort1.BaudRate = Convert.ToInt32(cBoxBaudrate.Text);
@@ -80,6 +82,8 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
                 tBoxDelay.Enabled = false;
+                tBoxSample.Enabled = false;
+                bReset.Enabled = false;
             }
 
             catch (Exception err)
@@ -105,6 +109,8 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = true;
                 cBoxParitybits.Enabled = true;
                 tBoxDelay.Enabled = true;
+                tBoxSample.Enabled = true;
+                bReset.Enabled = true;
 
                 Thread.Sleep(Delayms);
                 if (cBoxRestart.Checked)
@@ -360,6 +366,24 @@ namespace Serial_Port_Communications_Program
             {
                 tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
             }
+        }
+
+        private void bReset_Click(object sender, EventArgs e)
+        {
+            serialPort1.PortName = cBoxComport.Text;
+            serialPort1.BaudRate = Convert.ToInt32(cBoxBaudrate.Text);
+            serialPort1.DataBits = Convert.ToInt32(cBoxDatabits.Text);
+            serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cBoxStopbits.Text);
+            serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), cBoxParitybits.Text);
+            Delayms = Convert.ToInt32(tBoxDelay.Text);
+            serialPort1.BaudRate = 9600;
+            serialPort1.Open();
+            serialPort1.Write(tBoxSample.Text);
+            Thread.Sleep(2000);
+            serialPort1.Write(cBoxBaudrate.Text);
+            Thread.Sleep(2000);
+            serialPort1.Write("~");
+            serialPort1.Close();
         }
     }
 }

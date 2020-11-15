@@ -42,6 +42,7 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lStatus = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cBoxRestart = new System.Windows.Forms.CheckBox();
             this.tBoxReceive = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.cBoxCleardata = new System.Windows.Forms.CheckBox();
@@ -67,10 +68,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cBoxBaudrate = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tBoxSample = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tBoxDelay = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cBoxRestart = new System.Windows.Forms.CheckBox();
+            this.bReset = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -164,7 +167,7 @@
             // 
             this.bConnect.Location = new System.Drawing.Point(6, 21);
             this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(98, 43);
+            this.bConnect.Size = new System.Drawing.Size(98, 25);
             this.bConnect.TabIndex = 2;
             this.bConnect.Text = "Connect";
             this.bConnect.UseVisualStyleBackColor = true;
@@ -172,9 +175,9 @@
             // 
             // bDisconnect
             // 
-            this.bDisconnect.Location = new System.Drawing.Point(6, 70);
+            this.bDisconnect.Location = new System.Drawing.Point(6, 52);
             this.bDisconnect.Name = "bDisconnect";
-            this.bDisconnect.Size = new System.Drawing.Size(98, 43);
+            this.bDisconnect.Size = new System.Drawing.Size(98, 27);
             this.bDisconnect.TabIndex = 3;
             this.bDisconnect.Text = "Disconnect";
             this.bDisconnect.UseVisualStyleBackColor = true;
@@ -202,15 +205,28 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.bReset);
             this.groupBox6.Controls.Add(this.cBoxRestart);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.bDisconnect);
             this.groupBox6.Controls.Add(this.bConnect);
-            this.groupBox6.Location = new System.Drawing.Point(13, 210);
+            this.groupBox6.Location = new System.Drawing.Point(13, 233);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(266, 133);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
+            // 
+            // cBoxRestart
+            // 
+            this.cBoxRestart.AutoSize = true;
+            this.cBoxRestart.Checked = true;
+            this.cBoxRestart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cBoxRestart.Location = new System.Drawing.Point(147, 104);
+            this.cBoxRestart.Name = "cBoxRestart";
+            this.cBoxRestart.Size = new System.Drawing.Size(76, 21);
+            this.cBoxRestart.TabIndex = 5;
+            this.cBoxRestart.Text = "Restart";
+            this.cBoxRestart.UseVisualStyleBackColor = true;
             // 
             // tBoxReceive
             // 
@@ -267,7 +283,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(47, 34);
+            this.label7.Location = new System.Drawing.Point(47, 27);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(83, 17);
             this.label7.TabIndex = 0;
@@ -276,7 +292,7 @@
             // lTime
             // 
             this.lTime.AutoSize = true;
-            this.lTime.Location = new System.Drawing.Point(150, 34);
+            this.lTime.Location = new System.Drawing.Point(150, 27);
             this.lTime.Name = "lTime";
             this.lTime.Size = new System.Drawing.Size(38, 17);
             this.lTime.TabIndex = 1;
@@ -285,7 +301,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(47, 61);
+            this.label10.Location = new System.Drawing.Point(47, 54);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 17);
             this.label10.TabIndex = 2;
@@ -294,7 +310,7 @@
             // lRate
             // 
             this.lRate.AutoSize = true;
-            this.lRate.Location = new System.Drawing.Point(150, 61);
+            this.lRate.Location = new System.Drawing.Point(150, 54);
             this.lRate.Name = "lRate";
             this.lRate.Size = new System.Drawing.Size(39, 17);
             this.lRate.TabIndex = 3;
@@ -303,7 +319,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(47, 89);
+            this.label12.Location = new System.Drawing.Point(47, 80);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 17);
             this.label12.TabIndex = 4;
@@ -312,7 +328,7 @@
             // lChar
             // 
             this.lChar.AutoSize = true;
-            this.lChar.Location = new System.Drawing.Point(150, 89);
+            this.lChar.Location = new System.Drawing.Point(150, 80);
             this.lChar.Name = "lChar";
             this.lChar.Size = new System.Drawing.Size(16, 17);
             this.lChar.TabIndex = 5;
@@ -321,7 +337,7 @@
             // cBoxSave
             // 
             this.cBoxSave.AutoSize = true;
-            this.cBoxSave.Location = new System.Drawing.Point(20, 131);
+            this.cBoxSave.Location = new System.Drawing.Point(20, 110);
             this.cBoxSave.Name = "cBoxSave";
             this.cBoxSave.Size = new System.Drawing.Size(140, 21);
             this.cBoxSave.TabIndex = 6;
@@ -330,7 +346,7 @@
             // 
             // bClean
             // 
-            this.bClean.Location = new System.Drawing.Point(169, 124);
+            this.bClean.Location = new System.Drawing.Point(169, 103);
             this.bClean.Name = "bClean";
             this.bClean.Size = new System.Drawing.Size(75, 33);
             this.bClean.TabIndex = 2;
@@ -348,9 +364,9 @@
             this.groupBox8.Controls.Add(this.label10);
             this.groupBox8.Controls.Add(this.lTime);
             this.groupBox8.Controls.Add(this.label7);
-            this.groupBox8.Location = new System.Drawing.Point(13, 343);
+            this.groupBox8.Location = new System.Drawing.Point(13, 372);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(266, 174);
+            this.groupBox8.Size = new System.Drawing.Size(266, 145);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Transmission Details";
@@ -471,6 +487,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tBoxSample);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.tBoxDelay);
             this.groupBox1.Controls.Add(this.cBoxBaudrate);
@@ -485,10 +503,27 @@
             this.groupBox1.Controls.Add(this.cBoxDatabits);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(267, 199);
+            this.groupBox1.Size = new System.Drawing.Size(267, 224);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Com Port Controls";
+            // 
+            // tBoxSample
+            // 
+            this.tBoxSample.Location = new System.Drawing.Point(120, 196);
+            this.tBoxSample.Name = "tBoxSample";
+            this.tBoxSample.Size = new System.Drawing.Size(120, 22);
+            this.tBoxSample.TabIndex = 13;
+            this.tBoxSample.Text = "5";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(27, 199);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(87, 17);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Sample (ms)";
             // 
             // label6
             // 
@@ -521,17 +556,15 @@
             this.panel1.Size = new System.Drawing.Size(800, 533);
             this.panel1.TabIndex = 5;
             // 
-            // cBoxRestart
+            // bReset
             // 
-            this.cBoxRestart.AutoSize = true;
-            this.cBoxRestart.Checked = true;
-            this.cBoxRestart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cBoxRestart.Location = new System.Drawing.Point(147, 104);
-            this.cBoxRestart.Name = "cBoxRestart";
-            this.cBoxRestart.Size = new System.Drawing.Size(76, 21);
-            this.cBoxRestart.TabIndex = 5;
-            this.cBoxRestart.Text = "Restart";
-            this.cBoxRestart.UseVisualStyleBackColor = true;
+            this.bReset.Location = new System.Drawing.Point(6, 85);
+            this.bReset.Name = "bReset";
+            this.bReset.Size = new System.Drawing.Size(98, 26);
+            this.bReset.TabIndex = 6;
+            this.bReset.Text = "Reset";
+            this.bReset.UseVisualStyleBackColor = true;
+            this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
             // Form1
             // 
@@ -609,6 +642,9 @@
         private System.Windows.Forms.TextBox tBoxDelay;
         private System.Windows.Forms.Label tBoxLength;
         private System.Windows.Forms.CheckBox cBoxRestart;
+        private System.Windows.Forms.TextBox tBoxSample;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button bReset;
     }
 }
 
