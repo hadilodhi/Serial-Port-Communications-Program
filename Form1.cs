@@ -66,8 +66,6 @@ namespace Serial_Port_Communications_Program
 
                 serialPort1.BaudRate = 9600;
                 serialPort1.Open();
-                serialPort1.Write(tBoxSample.Text);
-                Thread.Sleep(2000);
                 serialPort1.Write(cBoxBaudrate.Text);
                 serialPort1.Close();
                 serialPort1.BaudRate = Convert.ToInt32(cBoxBaudrate.Text);
@@ -82,8 +80,6 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
                 tBoxDelay.Enabled = false;
-                tBoxSample.Enabled = false;
-                bReset.Enabled = false;
             }
 
             catch (Exception err)
@@ -109,8 +105,6 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = true;
                 cBoxParitybits.Enabled = true;
                 tBoxDelay.Enabled = true;
-                tBoxSample.Enabled = true;
-                bReset.Enabled = true;
 
                 Thread.Sleep(Delayms);
                 if (cBoxRestart.Checked)
@@ -198,7 +192,16 @@ namespace Serial_Port_Communications_Program
                     elapsedms = 1;
                 }
                 elapsedms -= Delayms * 2;
-                lTime.Text = elapsedms.ToString() + " ms";
+                if (elapsedms <= 1000)
+                {
+                    lTime.Text = elapsedms.ToString() + " ms";
+                }
+                else
+                {
+                    elapsedms /= 1000;
+                    lTime.Text = elapsedms.ToString("#") + " s";
+                    elapsedms *= 1000;
+                }
                 lChar.Text = (ReceiveDatal).ToString();
                 SendBack = elapsedms + "/" + ReceiveDatal + Convert.ToChar(4).ToString();
                 CalcRate();
@@ -211,7 +214,16 @@ namespace Serial_Port_Communications_Program
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(4).ToString(), "");
                 ReceiveDatal = Convert.ToDecimal(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
                 elapsedms = Convert.ToDecimal(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
-                lTime.Text = elapsedms.ToString() + " ms";
+                if (elapsedms <= 1000)
+                {
+                    lTime.Text = elapsedms.ToString() + " ms";
+                }
+                else
+                {
+                    elapsedms /= 1000;
+                    lTime.Text = elapsedms.ToString("#") + " s";
+                    elapsedms *= 1000;
+                }
                 lChar.Text = (ReceiveDatal).ToString();
                 CalcRate();
                 ReceiveData = "";
@@ -366,24 +378,6 @@ namespace Serial_Port_Communications_Program
             {
                 tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
             }
-        }
-
-        private void bReset_Click(object sender, EventArgs e)
-        {
-            serialPort1.PortName = cBoxComport.Text;
-            serialPort1.BaudRate = Convert.ToInt32(cBoxBaudrate.Text);
-            serialPort1.DataBits = Convert.ToInt32(cBoxDatabits.Text);
-            serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cBoxStopbits.Text);
-            serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), cBoxParitybits.Text);
-            Delayms = Convert.ToInt32(tBoxDelay.Text);
-            serialPort1.BaudRate = 9600;
-            serialPort1.Open();
-            serialPort1.Write(tBoxSample.Text);
-            Thread.Sleep(2000);
-            serialPort1.Write(cBoxBaudrate.Text);
-            Thread.Sleep(2000);
-            serialPort1.Write("~");
-            serialPort1.Close();
         }
     }
 }
