@@ -28,7 +28,6 @@ namespace Serial_Port_Communications_Program
         decimal ReceiveDatal;
         decimal Rate;
         string RateS;
-        int Delayms;
 
         public Form1()
         {
@@ -47,8 +46,9 @@ namespace Serial_Port_Communications_Program
             groupBox4.Top = 225;
 
 
-            cBoxComport.Items.AddRange(SerialPort.GetPortNames());
-            serialPort1.NewLine = Convert.ToChar(1).ToString();
+            string[] ports = SerialPort.GetPortNames();
+            cBoxComport.Items.AddRange(ports);
+            serialPort1.NewLine = "^";
             bDisconnect.Enabled = false;
         }
 
@@ -61,13 +61,6 @@ namespace Serial_Port_Communications_Program
                 serialPort1.DataBits = Convert.ToInt32(cBoxDatabits.Text);
                 serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cBoxStopbits.Text);
                 serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), cBoxParitybits.Text);
-                Delayms = Convert.ToInt32(tBoxDelay.Text);
-
-                serialPort1.BaudRate = 9600;
-                serialPort1.Open();
-                serialPort1.Write(cBoxBaudrate.Text);
-                serialPort1.Close();
-                serialPort1.BaudRate = Convert.ToInt32(cBoxBaudrate.Text);
 
                 serialPort1.Open();
                 lStatus.Text = "Connected";
@@ -78,7 +71,8 @@ namespace Serial_Port_Communications_Program
                 cBoxDatabits.Enabled = false;
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
-                tBoxDelay.Enabled = false;
+
+
             }
 
             catch (Exception err)
@@ -91,9 +85,6 @@ namespace Serial_Port_Communications_Program
         {
             if (serialPort1.IsOpen)
             {
-
-                serialPort1.Write(Convert.ToChar(126).ToString());
-
                 serialPort1.Close();
                 lStatus.Text = "Disconnected";
                 bConnect.Enabled = true;
@@ -103,17 +94,6 @@ namespace Serial_Port_Communications_Program
                 cBoxDatabits.Enabled = true;
                 cBoxStopbits.Enabled = true;
                 cBoxParitybits.Enabled = true;
-                tBoxDelay.Enabled = true;
-
-                Thread.Sleep(Delayms);
-                if (cBoxRestart.Checked)
-                {
-                    Application.Restart();
-                }
-                else
-                {
-                    Application.Exit();
-                }
             }
         }
 
@@ -132,24 +112,12 @@ namespace Serial_Port_Communications_Program
 
                     if (cBoxNewline.Checked)
                     {
-
-                        serialPort1.Write(Convert.ToChar(2).ToString());
-                        Thread.Sleep(Delayms);
                         serialPort1.WriteLine(SendData);
-                        Thread.Sleep(Delayms);
-                        serialPort1.Write(Convert.ToChar(3).ToString());
-
                     }
 
                     else
                     {
-
-                        serialPort1.Write(Convert.ToChar(2).ToString());
-                        Thread.Sleep(Delayms);
                         serialPort1.Write(SendData);
-                        Thread.Sleep(Delayms);
-                        serialPort1.Write(Convert.ToChar(3).ToString());
-
                     }
                 }
                 if (cBoxSave.Checked)
@@ -173,100 +141,64 @@ namespace Serial_Port_Communications_Program
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
 
-            ReceiveData += serialPort1.ReadExisting();
+            ReceiveData = serialPort1.ReadExisting();
             this.Invoke(new EventHandler(ShowData));
 
         }
 
         private void ShowData(object sender, EventArgs e)
         {
-
-            if (ReceiveData.Contains(Convert.ToChar(2).ToString()))
-            {
-                stopwatch.Start();
-                ReceiveData = "";
-            }
-            else if (ReceiveData.Contains(Convert.ToChar(3).ToString()))
-
+            if (ReceiveData.Contains("$"))
             {
                 stopwatch.Stop();
-                ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
-                Processing();
                 elapsedms = stopwatch.ElapsedMilliseconds;
                 if (elapsedms == 0)
                 {
                     elapsedms = 1;
                 }
-
-                elapsedms -= Delayms * 2;
-                if (elapsedms <= 1000)
-                {
-                    lTime.Text = elapsedms.ToString() + " ms";
-                }
-                else
-                {
-                    elapsedms /= 1000;
-                    lTime.Text = elapsedms.ToString("#") + " s";
-                    elapsedms *= 1000;
-                }
+                lTime.Text = (elapsedms / 2).ToString() + " ms";
+                ReceiveDatal = ReceiveData.Length - 1;
                 lChar.Text = (ReceiveDatal).ToString();
-                SendBack = elapsedms + "/" + ReceiveDatal + Convert.ToChar(4).ToString();
-                CalcRate();
-                serialPort1.Write(SendBack);
-
+                ReceiveDatal = ReceiveDatal * 8;
+                elapseds = elapsedms / 2000;
+                Rate = ReceiveDatal / elapseds;
+                if (Rate <= 1000)
+                {
+                    RateS = Rate.ToString("#");
+                    lRate.Text = RateS + " b/s";
+                }
+                else if (Rate <= 1000000)
+                {
+                    Rate = Rate / 1000;
+                    RateS = Rate.ToString("#");
+                    lRate.Text = RateS + " Kb/s";
+                }
+                else if (Rate <= 1000000000)
+                {
+                    Rate = Rate / 1000000;
+                    RateS = Rate.ToString("#");
+                    lRate.Text = RateS + " Mb/s";
+                }
 
                 stopwatch.Reset();
-                ReceiveData = "";
             }
-
-            else if (ReceiveData.Contains(Convert.ToChar(4).ToString()))
+            else if (ReceiveData.Contains("^"))
             {
-                ReceiveData = ReceiveData.Replace(Convert.ToChar(4).ToString(), "");
-                ReceiveDatal = Convert.ToDecimal(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
-                elapsedms = Convert.ToDecimal(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
-                if (elapsedms <= 1000)
+                if (cBoxCleardata.Checked || tBoxReceive.Text == "")
                 {
-                    lTime.Text = elapsedms.ToString() + " ms";
-                }
-                else
-                {
-                    elapsedms /= 1000;
-                    lTime.Text = elapsedms.ToString("#") + " s";
-                    elapsedms *= 1000;
-                }
-                lChar.Text = (ReceiveDatal).ToString();
-                CalcRate();
-                ReceiveData = "";
-            }
-            //else
-            //{
-               // Processing();
-            //}
-            
-            void Processing()
-
-            {
-                if (ReceiveData.Contains(Convert.ToChar(1).ToString()))
-                {
-                    if (cBoxCleardata.Checked || tBoxReceive.Text == "")
-                    {
-                        ReceiveData = ReceiveData.Replace(Convert.ToChar(1).ToString(), "");
-                        ReceiveDatal = ReceiveData.Length + 2;
-                        Output();
-                    }
-                    else
-                    {
-                        ReceiveData = ReceiveData.Replace(Convert.ToChar(1).ToString(), "");
-                        ReceiveData = string.Concat("" + System.Environment.NewLine, ReceiveData);
-                        ReceiveDatal = ReceiveData.Length;
-                        Output();
-                    }
-                }
-                else
-                {
-                    ReceiveDatal = ReceiveData.Length;
+                    ReceiveData = ReceiveData.Replace("^", "");
                     Output();
                 }
+                else
+                {
+                    ReceiveData = ReceiveData.Replace("^", "");
+                    ReceiveData = string.Concat("" + System.Environment.NewLine, ReceiveData);
+                    Output();
+                }
+            }
+            else
+            {
+                Output();
             }
 
             void Output()
@@ -335,37 +267,6 @@ namespace Serial_Port_Communications_Program
             tBoxReceive.Height = groupBox4.Height- 102;
             groupBox4.Top = groupBox4.Height + 20;
 
-        }
-
-        private void tBoxSend_TextChanged(object sender, EventArgs e)
-        {
-            tBoxSend.ScrollBars = ScrollBars.Vertical;
-            if (cBoxNewline.Checked)
-            {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength + 2);
-            }
-            else
-            {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
-            }
-                
-        }
-
-        private void tBoxReceive_TextChanged(object sender, EventArgs e)
-        {
-            tBoxReceive.ScrollBars = ScrollBars.Vertical;
-        }
-
-        private void cBoxNewline_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cBoxNewline.Checked)
-            {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength + 2);
-            }
-            else
-            {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
-            }
         }
     }
 }

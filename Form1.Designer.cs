@@ -32,21 +32,19 @@
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.tBoxSend = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.tBoxLength = new System.Windows.Forms.Label();
-            this.cBoxNewline = new System.Windows.Forms.CheckBox();
-            this.bClear = new System.Windows.Forms.Button();
             this.bSend = new System.Windows.Forms.Button();
+            this.bClear = new System.Windows.Forms.Button();
+            this.cBoxNewline = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.bConnect = new System.Windows.Forms.Button();
             this.bDisconnect = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lStatus = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.cBoxRestart = new System.Windows.Forms.CheckBox();
             this.tBoxReceive = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.cBoxCleardata = new System.Windows.Forms.CheckBox();
             this.bClear2 = new System.Windows.Forms.Button();
+            this.cBoxCleardata = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.lTime = new System.Windows.Forms.Label();
@@ -68,8 +66,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cBoxBaudrate = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tBoxDelay = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -93,11 +89,9 @@
             this.tBoxSend.Name = "tBoxSend";
             this.tBoxSend.Size = new System.Drawing.Size(490, 118);
             this.tBoxSend.TabIndex = 0;
-            this.tBoxSend.TextChanged += new System.EventHandler(this.tBoxSend_TextChanged);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.tBoxLength);
             this.groupBox3.Controls.Add(this.cBoxNewline);
             this.groupBox3.Controls.Add(this.bClear);
             this.groupBox3.Controls.Add(this.bSend);
@@ -108,25 +102,15 @@
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             // 
-            // tBoxLength
+            // bSend
             // 
-            this.tBoxLength.AutoSize = true;
-            this.tBoxLength.Location = new System.Drawing.Point(427, 39);
-            this.tBoxLength.Name = "tBoxLength";
-            this.tBoxLength.Size = new System.Drawing.Size(16, 17);
-            this.tBoxLength.TabIndex = 3;
-            this.tBoxLength.Text = "0";
-            // 
-            // cBoxNewline
-            // 
-            this.cBoxNewline.AutoSize = true;
-            this.cBoxNewline.Location = new System.Drawing.Point(305, 37);
-            this.cBoxNewline.Name = "cBoxNewline";
-            this.cBoxNewline.Size = new System.Drawing.Size(88, 21);
-            this.cBoxNewline.TabIndex = 2;
-            this.cBoxNewline.Text = "New Line";
-            this.cBoxNewline.UseVisualStyleBackColor = true;
-            this.cBoxNewline.CheckedChanged += new System.EventHandler(this.cBoxNewline_CheckedChanged);
+            this.bSend.Location = new System.Drawing.Point(23, 26);
+            this.bSend.Name = "bSend";
+            this.bSend.Size = new System.Drawing.Size(125, 43);
+            this.bSend.TabIndex = 0;
+            this.bSend.Text = "Send";
+            this.bSend.UseVisualStyleBackColor = true;
+            this.bSend.Click += new System.EventHandler(this.bSend_Click);
             // 
             // bClear
             // 
@@ -138,15 +122,15 @@
             this.bClear.UseVisualStyleBackColor = true;
             this.bClear.Click += new System.EventHandler(this.bClear_Click);
             // 
-            // bSend
+            // cBoxNewline
             // 
-            this.bSend.Location = new System.Drawing.Point(23, 26);
-            this.bSend.Name = "bSend";
-            this.bSend.Size = new System.Drawing.Size(125, 43);
-            this.bSend.TabIndex = 0;
-            this.bSend.Text = "Send";
-            this.bSend.UseVisualStyleBackColor = true;
-            this.bSend.Click += new System.EventHandler(this.bSend_Click);
+            this.cBoxNewline.AutoSize = true;
+            this.cBoxNewline.Location = new System.Drawing.Point(305, 37);
+            this.cBoxNewline.Name = "cBoxNewline";
+            this.cBoxNewline.Size = new System.Drawing.Size(88, 21);
+            this.cBoxNewline.TabIndex = 2;
+            this.cBoxNewline.Text = "New Line";
+            this.cBoxNewline.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -164,7 +148,7 @@
             // 
             this.bConnect.Location = new System.Drawing.Point(6, 21);
             this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(98, 46);
+            this.bConnect.Size = new System.Drawing.Size(98, 43);
             this.bConnect.TabIndex = 2;
             this.bConnect.Text = "Connect";
             this.bConnect.UseVisualStyleBackColor = true;
@@ -172,9 +156,9 @@
             // 
             // bDisconnect
             // 
-            this.bDisconnect.Location = new System.Drawing.Point(6, 73);
+            this.bDisconnect.Location = new System.Drawing.Point(6, 70);
             this.bDisconnect.Name = "bDisconnect";
-            this.bDisconnect.Size = new System.Drawing.Size(98, 44);
+            this.bDisconnect.Size = new System.Drawing.Size(98, 43);
             this.bDisconnect.TabIndex = 3;
             this.bDisconnect.Text = "Disconnect";
             this.bDisconnect.UseVisualStyleBackColor = true;
@@ -183,7 +167,7 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.lStatus);
-            this.groupBox7.Location = new System.Drawing.Point(118, 9);
+            this.groupBox7.Location = new System.Drawing.Point(118, 22);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(142, 91);
             this.groupBox7.TabIndex = 4;
@@ -202,27 +186,14 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.cBoxRestart);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.bDisconnect);
             this.groupBox6.Controls.Add(this.bConnect);
-            this.groupBox6.Location = new System.Drawing.Point(13, 233);
+            this.groupBox6.Location = new System.Drawing.Point(13, 207);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(266, 133);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
-            // 
-            // cBoxRestart
-            // 
-            this.cBoxRestart.AutoSize = true;
-            this.cBoxRestart.Checked = true;
-            this.cBoxRestart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cBoxRestart.Location = new System.Drawing.Point(147, 104);
-            this.cBoxRestart.Name = "cBoxRestart";
-            this.cBoxRestart.Size = new System.Drawing.Size(76, 21);
-            this.cBoxRestart.TabIndex = 5;
-            this.cBoxRestart.Text = "Restart";
-            this.cBoxRestart.UseVisualStyleBackColor = true;
             // 
             // tBoxReceive
             // 
@@ -231,7 +202,6 @@
             this.tBoxReceive.Name = "tBoxReceive";
             this.tBoxReceive.Size = new System.Drawing.Size(490, 118);
             this.tBoxReceive.TabIndex = 0;
-            this.tBoxReceive.TextChanged += new System.EventHandler(this.tBoxReceive_TextChanged);
             // 
             // groupBox5
             // 
@@ -244,16 +214,6 @@
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             // 
-            // cBoxCleardata
-            // 
-            this.cBoxCleardata.AutoSize = true;
-            this.cBoxCleardata.Location = new System.Drawing.Point(177, 37);
-            this.cBoxCleardata.Name = "cBoxCleardata";
-            this.cBoxCleardata.Size = new System.Drawing.Size(184, 21);
-            this.cBoxCleardata.TabIndex = 2;
-            this.cBoxCleardata.Text = "Clear Data Automatically";
-            this.cBoxCleardata.UseVisualStyleBackColor = true;
-            // 
             // bClear2
             // 
             this.bClear2.Location = new System.Drawing.Point(23, 25);
@@ -263,6 +223,16 @@
             this.bClear2.Text = "Clear";
             this.bClear2.UseVisualStyleBackColor = true;
             this.bClear2.Click += new System.EventHandler(this.bClear2_Click);
+            // 
+            // cBoxCleardata
+            // 
+            this.cBoxCleardata.AutoSize = true;
+            this.cBoxCleardata.Location = new System.Drawing.Point(177, 37);
+            this.cBoxCleardata.Name = "cBoxCleardata";
+            this.cBoxCleardata.Size = new System.Drawing.Size(184, 21);
+            this.cBoxCleardata.TabIndex = 2;
+            this.cBoxCleardata.Text = "Clear Data Automatically";
+            this.cBoxCleardata.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
@@ -279,7 +249,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(47, 27);
+            this.label7.Location = new System.Drawing.Point(47, 34);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(83, 17);
             this.label7.TabIndex = 0;
@@ -288,7 +258,7 @@
             // lTime
             // 
             this.lTime.AutoSize = true;
-            this.lTime.Location = new System.Drawing.Point(150, 27);
+            this.lTime.Location = new System.Drawing.Point(150, 34);
             this.lTime.Name = "lTime";
             this.lTime.Size = new System.Drawing.Size(38, 17);
             this.lTime.TabIndex = 1;
@@ -297,7 +267,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(47, 54);
+            this.label10.Location = new System.Drawing.Point(47, 61);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 17);
             this.label10.TabIndex = 2;
@@ -306,7 +276,7 @@
             // lRate
             // 
             this.lRate.AutoSize = true;
-            this.lRate.Location = new System.Drawing.Point(150, 54);
+            this.lRate.Location = new System.Drawing.Point(150, 61);
             this.lRate.Name = "lRate";
             this.lRate.Size = new System.Drawing.Size(39, 17);
             this.lRate.TabIndex = 3;
@@ -315,7 +285,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(47, 80);
+            this.label12.Location = new System.Drawing.Point(47, 89);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 17);
             this.label12.TabIndex = 4;
@@ -324,7 +294,7 @@
             // lChar
             // 
             this.lChar.AutoSize = true;
-            this.lChar.Location = new System.Drawing.Point(150, 80);
+            this.lChar.Location = new System.Drawing.Point(150, 89);
             this.lChar.Name = "lChar";
             this.lChar.Size = new System.Drawing.Size(16, 17);
             this.lChar.TabIndex = 5;
@@ -333,7 +303,7 @@
             // cBoxSave
             // 
             this.cBoxSave.AutoSize = true;
-            this.cBoxSave.Location = new System.Drawing.Point(20, 110);
+            this.cBoxSave.Location = new System.Drawing.Point(20, 131);
             this.cBoxSave.Name = "cBoxSave";
             this.cBoxSave.Size = new System.Drawing.Size(140, 21);
             this.cBoxSave.TabIndex = 6;
@@ -342,7 +312,7 @@
             // 
             // bClean
             // 
-            this.bClean.Location = new System.Drawing.Point(169, 103);
+            this.bClean.Location = new System.Drawing.Point(169, 124);
             this.bClean.Name = "bClean";
             this.bClean.Size = new System.Drawing.Size(75, 33);
             this.bClean.TabIndex = 2;
@@ -360,9 +330,9 @@
             this.groupBox8.Controls.Add(this.label10);
             this.groupBox8.Controls.Add(this.lTime);
             this.groupBox8.Controls.Add(this.label7);
-            this.groupBox8.Location = new System.Drawing.Point(13, 372);
+            this.groupBox8.Location = new System.Drawing.Point(13, 343);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(266, 145);
+            this.groupBox8.Size = new System.Drawing.Size(266, 174);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Transmission Details";
@@ -374,7 +344,7 @@
             "6",
             "7",
             "8"});
-            this.cBoxDatabits.Location = new System.Drawing.Point(119, 88);
+            this.cBoxDatabits.Location = new System.Drawing.Point(119, 86);
             this.cBoxDatabits.Name = "cBoxDatabits";
             this.cBoxDatabits.Size = new System.Drawing.Size(121, 24);
             this.cBoxDatabits.TabIndex = 3;
@@ -383,7 +353,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 32);
+            this.label1.Location = new System.Drawing.Point(30, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 17);
             this.label1.TabIndex = 0;
@@ -392,7 +362,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 92);
+            this.label2.Location = new System.Drawing.Point(30, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 17);
             this.label2.TabIndex = 2;
@@ -401,7 +371,7 @@
             // cBoxComport
             // 
             this.cBoxComport.FormattingEnabled = true;
-            this.cBoxComport.Location = new System.Drawing.Point(119, 28);
+            this.cBoxComport.Location = new System.Drawing.Point(119, 25);
             this.cBoxComport.Name = "cBoxComport";
             this.cBoxComport.Size = new System.Drawing.Size(121, 24);
             this.cBoxComport.TabIndex = 1;
@@ -409,7 +379,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(27, 122);
+            this.label4.Location = new System.Drawing.Point(30, 119);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 17);
             this.label4.TabIndex = 6;
@@ -421,7 +391,7 @@
             this.cBoxStopbits.Items.AddRange(new object[] {
             "One",
             "Two"});
-            this.cBoxStopbits.Location = new System.Drawing.Point(119, 118);
+            this.cBoxStopbits.Location = new System.Drawing.Point(119, 116);
             this.cBoxStopbits.Name = "cBoxStopbits";
             this.cBoxStopbits.Size = new System.Drawing.Size(121, 24);
             this.cBoxStopbits.TabIndex = 7;
@@ -434,7 +404,7 @@
             "None",
             "Odd",
             "Even"});
-            this.cBoxParitybits.Location = new System.Drawing.Point(119, 148);
+            this.cBoxParitybits.Location = new System.Drawing.Point(119, 146);
             this.cBoxParitybits.Name = "cBoxParitybits";
             this.cBoxParitybits.Size = new System.Drawing.Size(121, 24);
             this.cBoxParitybits.TabIndex = 5;
@@ -443,7 +413,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(27, 61);
+            this.label5.Location = new System.Drawing.Point(30, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 17);
             this.label5.TabIndex = 8;
@@ -452,7 +422,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 152);
+            this.label3.Location = new System.Drawing.Point(30, 149);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 17);
             this.label3.TabIndex = 4;
@@ -475,7 +445,7 @@
             "38400",
             "57600",
             "115200"});
-            this.cBoxBaudrate.Location = new System.Drawing.Point(119, 57);
+            this.cBoxBaudrate.Location = new System.Drawing.Point(119, 55);
             this.cBoxBaudrate.Name = "cBoxBaudrate";
             this.cBoxBaudrate.Size = new System.Drawing.Size(121, 24);
             this.cBoxBaudrate.TabIndex = 9;
@@ -483,8 +453,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.tBoxDelay);
             this.groupBox1.Controls.Add(this.cBoxBaudrate);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label5);
@@ -497,27 +465,10 @@
             this.groupBox1.Controls.Add(this.cBoxDatabits);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(267, 224);
+            this.groupBox1.Size = new System.Drawing.Size(267, 189);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Com Port Controls";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 180);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(76, 17);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Delay (ms)";
-            // 
-            // tBoxDelay
-            // 
-            this.tBoxDelay.Location = new System.Drawing.Point(119, 177);
-            this.tBoxDelay.Name = "tBoxDelay";
-            this.tBoxDelay.Size = new System.Drawing.Size(121, 22);
-            this.tBoxDelay.TabIndex = 10;
-            this.tBoxDelay.Text = "1";
             // 
             // panel1
             // 
@@ -551,7 +502,6 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -605,10 +555,6 @@
         private System.Windows.Forms.ComboBox cBoxBaudrate;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tBoxDelay;
-        private System.Windows.Forms.Label tBoxLength;
-        private System.Windows.Forms.CheckBox cBoxRestart;
     }
 }
 
