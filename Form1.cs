@@ -11,7 +11,6 @@ using System.IO.Ports;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 
 namespace Serial_Port_Communications_Program
 {
@@ -129,23 +128,28 @@ namespace Serial_Port_Communications_Program
                 }
                 else
                 {
+                    stopwatch.Start();
 
                     if (cBoxNewline.Checked)
                     {
+
                         serialPort1.Write(Convert.ToChar(2).ToString());
                         Thread.Sleep(Delayms);
                         serialPort1.WriteLine(SendData);
                         Thread.Sleep(Delayms);
                         serialPort1.Write(Convert.ToChar(3).ToString());
+
                     }
 
                     else
                     {
+
                         serialPort1.Write(Convert.ToChar(2).ToString());
                         Thread.Sleep(Delayms);
                         serialPort1.Write(SendData);
                         Thread.Sleep(Delayms);
                         serialPort1.Write(Convert.ToChar(3).ToString());
+
                     }
                 }
                 if (cBoxSave.Checked)
@@ -176,12 +180,14 @@ namespace Serial_Port_Communications_Program
 
         private void ShowData(object sender, EventArgs e)
         {
+
             if (ReceiveData.Contains(Convert.ToChar(2).ToString()))
             {
                 stopwatch.Start();
                 ReceiveData = "";
             }
             else if (ReceiveData.Contains(Convert.ToChar(3).ToString()))
+
             {
                 stopwatch.Stop();
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
@@ -191,6 +197,7 @@ namespace Serial_Port_Communications_Program
                 {
                     elapsedms = 1;
                 }
+
                 elapsedms -= Delayms * 2;
                 if (elapsedms <= 1000)
                 {
@@ -206,9 +213,12 @@ namespace Serial_Port_Communications_Program
                 SendBack = elapsedms + "/" + ReceiveDatal + Convert.ToChar(4).ToString();
                 CalcRate();
                 serialPort1.Write(SendBack);
+
+
                 stopwatch.Reset();
                 ReceiveData = "";
             }
+
             else if (ReceiveData.Contains(Convert.ToChar(4).ToString()))
             {
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(4).ToString(), "");
@@ -234,6 +244,7 @@ namespace Serial_Port_Communications_Program
             //}
             
             void Processing()
+
             {
                 if (ReceiveData.Contains(Convert.ToChar(1).ToString()))
                 {
@@ -260,6 +271,7 @@ namespace Serial_Port_Communications_Program
 
             void Output()
             {
+
                 if (cBoxCleardata.Checked)
                 {
                     tBoxReceive.Text = ReceiveData;
@@ -283,34 +295,10 @@ namespace Serial_Port_Communications_Program
                         MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
 
-            void CalcRate()
-            {
-                if (elapsedms == 0)
-                {
-                    elapsedms = 1;
-                }
-                elapseds = elapsedms / 1000;
-                ReceiveDatal *= 8;
-                Rate = ReceiveDatal / elapseds;
-                if (Rate <= 1000)
-                {
-                    RateS = Rate.ToString("#");
-                    lRate.Text = RateS + " b/s";
-                }
-                else if (Rate <= 1000000)
-                {
-                    Rate = Rate / 1000;
-                    RateS = Rate.ToString("#");
-                    lRate.Text = RateS + " Kb/s";
-                }
-                else if (Rate <= 1000000000)
-                {
-                    Rate = Rate / 1000000;
-                    RateS = Rate.ToString("#");
-                    lRate.Text = RateS + " Mb/s";
-                }
+                SendBack = ReceiveData += "$";
+                serialPort1.Write(SendBack);
+
             }
         }
 
