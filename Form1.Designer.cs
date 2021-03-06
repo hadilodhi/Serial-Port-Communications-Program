@@ -58,6 +58,7 @@
             this.cBoxSave = new System.Windows.Forms.CheckBox();
             this.bClean = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.bSendFile = new System.Windows.Forms.Button();
             this.cBoxDatabits = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -69,10 +70,18 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cBoxBaudrate = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lFileName = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tBoxDelay = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.bAdvanced = new System.Windows.Forms.Button();
+            this.bAccept = new System.Windows.Forms.Button();
+            this.bReject = new System.Windows.Forms.Button();
+            this.bSelectFile = new System.Windows.Forms.Button();
+            this.bFileSend = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -81,6 +90,8 @@
             this.groupBox4.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,9 +175,9 @@
             // 
             // bConnect
             // 
-            this.bConnect.Location = new System.Drawing.Point(8, 15);
+            this.bConnect.Location = new System.Drawing.Point(11, 21);
             this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(98, 36);
+            this.bConnect.Size = new System.Drawing.Size(98, 50);
             this.bConnect.TabIndex = 2;
             this.bConnect.Text = "Connect";
             this.bConnect.UseVisualStyleBackColor = true;
@@ -174,9 +185,9 @@
             // 
             // bDisconnect
             // 
-            this.bDisconnect.Location = new System.Drawing.Point(8, 55);
+            this.bDisconnect.Location = new System.Drawing.Point(11, 77);
             this.bDisconnect.Name = "bDisconnect";
-            this.bDisconnect.Size = new System.Drawing.Size(98, 38);
+            this.bDisconnect.Size = new System.Drawing.Size(98, 51);
             this.bDisconnect.TabIndex = 3;
             this.bDisconnect.Text = "Disconnect";
             this.bDisconnect.UseVisualStyleBackColor = true;
@@ -204,7 +215,6 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.bAdvanced);
             this.groupBox6.Controls.Add(this.cBoxRestart);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.bDisconnect);
@@ -293,7 +303,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(47, 27);
+            this.label7.Location = new System.Drawing.Point(17, 27);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(83, 17);
             this.label7.TabIndex = 0;
@@ -302,7 +312,7 @@
             // lTime
             // 
             this.lTime.AutoSize = true;
-            this.lTime.Location = new System.Drawing.Point(150, 27);
+            this.lTime.Location = new System.Drawing.Point(120, 27);
             this.lTime.Name = "lTime";
             this.lTime.Size = new System.Drawing.Size(38, 17);
             this.lTime.TabIndex = 1;
@@ -311,7 +321,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(47, 54);
+            this.label10.Location = new System.Drawing.Point(17, 54);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 17);
             this.label10.TabIndex = 2;
@@ -320,7 +330,7 @@
             // lRate
             // 
             this.lRate.AutoSize = true;
-            this.lRate.Location = new System.Drawing.Point(150, 54);
+            this.lRate.Location = new System.Drawing.Point(120, 54);
             this.lRate.Name = "lRate";
             this.lRate.Size = new System.Drawing.Size(39, 17);
             this.lRate.TabIndex = 3;
@@ -329,7 +339,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(47, 80);
+            this.label12.Location = new System.Drawing.Point(17, 80);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 17);
             this.label12.TabIndex = 4;
@@ -338,7 +348,7 @@
             // lChar
             // 
             this.lChar.AutoSize = true;
-            this.lChar.Location = new System.Drawing.Point(150, 80);
+            this.lChar.Location = new System.Drawing.Point(120, 80);
             this.lChar.Name = "lChar";
             this.lChar.Size = new System.Drawing.Size(16, 17);
             this.lChar.TabIndex = 5;
@@ -366,6 +376,7 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.bSendFile);
             this.groupBox8.Controls.Add(this.bClean);
             this.groupBox8.Controls.Add(this.cBoxSave);
             this.groupBox8.Controls.Add(this.lChar);
@@ -381,6 +392,16 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Transmission Details";
             // 
+            // bSendFile
+            // 
+            this.bSendFile.Location = new System.Drawing.Point(169, 27);
+            this.bSendFile.Name = "bSendFile";
+            this.bSendFile.Size = new System.Drawing.Size(75, 60);
+            this.bSendFile.TabIndex = 7;
+            this.bSendFile.Text = "Send File";
+            this.bSendFile.UseVisualStyleBackColor = true;
+            this.bSendFile.Click += new System.EventHandler(this.bSendFile_Click);
+            // 
             // cBoxDatabits
             // 
             this.cBoxDatabits.FormattingEnabled = true;
@@ -388,7 +409,7 @@
             "6",
             "7",
             "8"});
-            this.cBoxDatabits.Location = new System.Drawing.Point(119, 93);
+            this.cBoxDatabits.Location = new System.Drawing.Point(119, 86);
             this.cBoxDatabits.Name = "cBoxDatabits";
             this.cBoxDatabits.Size = new System.Drawing.Size(121, 24);
             this.cBoxDatabits.TabIndex = 3;
@@ -397,7 +418,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 37);
+            this.label1.Location = new System.Drawing.Point(27, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 17);
             this.label1.TabIndex = 0;
@@ -406,7 +427,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 97);
+            this.label2.Location = new System.Drawing.Point(27, 90);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 17);
             this.label2.TabIndex = 2;
@@ -415,7 +436,7 @@
             // cBoxComport
             // 
             this.cBoxComport.FormattingEnabled = true;
-            this.cBoxComport.Location = new System.Drawing.Point(119, 33);
+            this.cBoxComport.Location = new System.Drawing.Point(119, 26);
             this.cBoxComport.Name = "cBoxComport";
             this.cBoxComport.Size = new System.Drawing.Size(121, 24);
             this.cBoxComport.TabIndex = 1;
@@ -423,7 +444,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(27, 127);
+            this.label4.Location = new System.Drawing.Point(27, 120);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 17);
             this.label4.TabIndex = 6;
@@ -435,7 +456,7 @@
             this.cBoxStopbits.Items.AddRange(new object[] {
             "One",
             "Two"});
-            this.cBoxStopbits.Location = new System.Drawing.Point(119, 123);
+            this.cBoxStopbits.Location = new System.Drawing.Point(119, 116);
             this.cBoxStopbits.Name = "cBoxStopbits";
             this.cBoxStopbits.Size = new System.Drawing.Size(121, 24);
             this.cBoxStopbits.TabIndex = 7;
@@ -448,7 +469,7 @@
             "None",
             "Odd",
             "Even"});
-            this.cBoxParitybits.Location = new System.Drawing.Point(119, 153);
+            this.cBoxParitybits.Location = new System.Drawing.Point(119, 146);
             this.cBoxParitybits.Name = "cBoxParitybits";
             this.cBoxParitybits.Size = new System.Drawing.Size(121, 24);
             this.cBoxParitybits.TabIndex = 5;
@@ -457,7 +478,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(27, 66);
+            this.label5.Location = new System.Drawing.Point(27, 59);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 17);
             this.label5.TabIndex = 8;
@@ -466,7 +487,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 157);
+            this.label3.Location = new System.Drawing.Point(27, 150);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 17);
             this.label3.TabIndex = 4;
@@ -489,7 +510,7 @@
             "38400",
             "57600",
             "115200"});
-            this.cBoxBaudrate.Location = new System.Drawing.Point(119, 62);
+            this.cBoxBaudrate.Location = new System.Drawing.Point(119, 55);
             this.cBoxBaudrate.Name = "cBoxBaudrate";
             this.cBoxBaudrate.Size = new System.Drawing.Size(121, 24);
             this.cBoxBaudrate.TabIndex = 9;
@@ -497,6 +518,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.tBoxDelay);
             this.groupBox1.Controls.Add(this.cBoxBaudrate);
@@ -516,10 +538,59 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Com Port Controls";
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.groupBox9);
+            this.panel2.Location = new System.Drawing.Point(0, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(270, 210);
+            this.panel2.TabIndex = 5;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.bFileSend);
+            this.groupBox9.Controls.Add(this.bSelectFile);
+            this.groupBox9.Controls.Add(this.bReject);
+            this.groupBox9.Controls.Add(this.bAccept);
+            this.groupBox9.Controls.Add(this.progressBar1);
+            this.groupBox9.Controls.Add(this.lFileName);
+            this.groupBox9.Controls.Add(this.label8);
+            this.groupBox9.Location = new System.Drawing.Point(7, 4);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(254, 200);
+            this.groupBox9.TabIndex = 0;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "File Transfer";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 109);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(221, 23);
+            this.progressBar1.TabIndex = 4;
+            // 
+            // lFileName
+            // 
+            this.lFileName.AutoSize = true;
+            this.lFileName.Location = new System.Drawing.Point(52, 31);
+            this.lFileName.Name = "lFileName";
+            this.lFileName.Size = new System.Drawing.Size(73, 17);
+            this.lFileName.TabIndex = 1;
+            this.lFileName.Text = "Select File";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 30);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 17);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Name:";
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 185);
+            this.label6.Location = new System.Drawing.Point(27, 178);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(76, 17);
             this.label6.TabIndex = 11;
@@ -527,7 +598,7 @@
             // 
             // tBoxDelay
             // 
-            this.tBoxDelay.Location = new System.Drawing.Point(119, 182);
+            this.tBoxDelay.Location = new System.Drawing.Point(119, 175);
             this.tBoxDelay.Name = "tBoxDelay";
             this.tBoxDelay.Size = new System.Drawing.Size(121, 22);
             this.tBoxDelay.TabIndex = 10;
@@ -547,15 +618,45 @@
             this.panel1.Size = new System.Drawing.Size(800, 533);
             this.panel1.TabIndex = 5;
             // 
-            // bAdvanced
+            // bAccept
             // 
-            this.bAdvanced.Location = new System.Drawing.Point(8, 95);
-            this.bAdvanced.Name = "bAdvanced";
-            this.bAdvanced.Size = new System.Drawing.Size(98, 38);
-            this.bAdvanced.TabIndex = 6;
-            this.bAdvanced.Text = "Advanced";
-            this.bAdvanced.UseVisualStyleBackColor = true;
-            this.bAdvanced.Click += new System.EventHandler(this.bAdvanced_Click);
+            this.bAccept.Location = new System.Drawing.Point(30, 146);
+            this.bAccept.Name = "bAccept";
+            this.bAccept.Size = new System.Drawing.Size(89, 42);
+            this.bAccept.TabIndex = 6;
+            this.bAccept.Text = "Accept";
+            this.bAccept.UseVisualStyleBackColor = true;
+            this.bAccept.Click += new System.EventHandler(this.bAccept_Click);
+            // 
+            // bReject
+            // 
+            this.bReject.Location = new System.Drawing.Point(132, 146);
+            this.bReject.Name = "bReject";
+            this.bReject.Size = new System.Drawing.Size(88, 42);
+            this.bReject.TabIndex = 7;
+            this.bReject.Text = "Reject";
+            this.bReject.UseVisualStyleBackColor = true;
+            this.bReject.Click += new System.EventHandler(this.bReject_Click);
+            // 
+            // bSelectFile
+            // 
+            this.bSelectFile.Location = new System.Drawing.Point(30, 58);
+            this.bSelectFile.Name = "bSelectFile";
+            this.bSelectFile.Size = new System.Drawing.Size(88, 41);
+            this.bSelectFile.TabIndex = 8;
+            this.bSelectFile.Text = "Select File";
+            this.bSelectFile.UseVisualStyleBackColor = true;
+            this.bSelectFile.Click += new System.EventHandler(this.bSelectFile_Click);
+            // 
+            // bFileSend
+            // 
+            this.bFileSend.Location = new System.Drawing.Point(132, 59);
+            this.bFileSend.Name = "bFileSend";
+            this.bFileSend.Size = new System.Drawing.Size(88, 41);
+            this.bFileSend.TabIndex = 9;
+            this.bFileSend.Text = "Send";
+            this.bFileSend.UseVisualStyleBackColor = true;
+            this.bFileSend.Click += new System.EventHandler(this.bFileSend_Click);
             // 
             // Form1
             // 
@@ -565,7 +666,7 @@
             this.Controls.Add(this.panel1);
             this.MinimumSize = new System.Drawing.Size(818, 580);
             this.Name = "Form1";
-            this.Text = "Serial Port Communications Program";
+            this.Text = " Serial Port Communication Program";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox3.ResumeLayout(false);
@@ -584,6 +685,9 @@
             this.groupBox8.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -634,7 +738,16 @@
         private System.Windows.Forms.Label tBoxLength;
         private System.Windows.Forms.CheckBox cBoxRestart;
         private System.Windows.Forms.CheckBox cBoxDebug;
-        private System.Windows.Forms.Button bAdvanced;
+        private System.Windows.Forms.Button bSendFile;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label lFileName;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button bAccept;
+        private System.Windows.Forms.Button bSelectFile;
+        private System.Windows.Forms.Button bReject;
+        private System.Windows.Forms.Button bFileSend;
     }
 }
 

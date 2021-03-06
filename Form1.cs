@@ -33,6 +33,10 @@ namespace Serial_Port_Communications_Program
         List<string> SendDataLarge = new List<string>();
         int index = 0;
         int list = 0;
+        int flag = -1;
+        string OpenFile;
+        byte[] fileBytes;
+        string data;
 
         public Form1()
         {
@@ -50,11 +54,12 @@ namespace Serial_Port_Communications_Program
             tBoxReceive.Height = 108;
             groupBox4.Top = 225;
 
+            panel2.Hide();
 
             cBoxComport.Items.AddRange(SerialPort.GetPortNames());
             serialPort1.NewLine = Convert.ToChar(1).ToString();
             bDisconnect.Enabled = false;
-            bAdvanced.Enabled = false;
+            bSendFile.Enabled = false;
         }
 
         private void bConnect_Click(object sender, EventArgs e)
@@ -84,7 +89,7 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
                 tBoxDelay.Enabled = false;
-                bAdvanced.Enabled = true;
+                bSendFile.Enabled = true;
             }
 
             catch (Exception err)
@@ -128,22 +133,7 @@ namespace Serial_Port_Communications_Program
             if (serialPort1.IsOpen)
             {
                 SendData = tBoxSend.Text;
-                for (int i = 0; i < SendData.Length; i += 100)
-                {
-                    if ((i + 100) < SendData.Length)
-                    {
-                        SendDataLarge.Add(SendData.Substring(i, 100));
-                        list++;
-                    }
-                    else
-                    {
-                        SendDataLarge.Add(SendData.Substring(i));
-                        list++;
-                    }
-                }
-                SendData = SendDataLarge[index];
-                SendDataChunk();
-                index++;
+                BreakupDate();
                 if (cBoxSave.Checked)
                 {
                     try
@@ -162,6 +152,26 @@ namespace Serial_Port_Communications_Program
             }
         }
 
+        private void BreakupDate()
+        {
+            for (int i = 0; i < SendData.Length; i += 100)
+            {
+                if ((i + 100) < SendData.Length)
+                {
+                    SendDataLarge.Add(SendData.Substring(i, 100));
+                    list++;
+                }
+                else
+                {
+                    SendDataLarge.Add(SendData.Substring(i));
+                    list++;
+                }
+            }
+            SendData = SendDataLarge[index];
+            SendDataChunk();
+            index++;
+        }
+
         private void SendDataChunk()
         {
             if (cBoxNewline.Checked)
@@ -169,6 +179,11 @@ namespace Serial_Port_Communications_Program
                 serialPort1.Write(Convert.ToChar(2).ToString());
                 Thread.Sleep(Delayms);
                 serialPort1.WriteLine(SendData);
+                if(progressBar1.Value >= 1)
+                {
+                    Thread.Sleep(Delayms);
+                    serialPort1.Write(Convert.ToChar(8).ToString());
+                }
                 Thread.Sleep(Delayms);
                 serialPort1.Write(Convert.ToChar(3).ToString());
             }
@@ -178,6 +193,11 @@ namespace Serial_Port_Communications_Program
                 serialPort1.Write(Convert.ToChar(2).ToString());
                 Thread.Sleep(Delayms);
                 serialPort1.Write(SendData);
+                if (progressBar1.Value >= 1)
+                {
+                    Thread.Sleep(Delayms);
+                    serialPort1.Write(Convert.ToChar(8).ToString());
+                }
                 Thread.Sleep(Delayms);
                 serialPort1.Write(Convert.ToChar(3).ToString());
             }
@@ -202,7 +222,19 @@ namespace Serial_Port_Communications_Program
             {
                 stopwatch.Stop();
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
-                Processing();
+                if(ReceiveData.Contains(Convert.ToChar(8).ToString()))
+                {
+                    if (progressBar1.Value <= 90)
+                    {
+                        progressBar1.Value++;
+                    }
+                    ReceiveData = ReceiveData.Replace(Convert.ToChar(8).ToString(), "");
+                    data += ReceiveData;
+                }
+                else
+                {
+                    Processing();
+                }
                 elapsedms = stopwatch.ElapsedMilliseconds;
                 if (elapsedms == 0)
                 {
@@ -246,16 +278,78 @@ namespace Serial_Port_Communications_Program
                 ReceiveData = "";
                 if (index != list)
                 {
+                    if (progressBar1.Value >= 1 && progressBar1.Value <= 90)
+                    {
+                        progressBar1.Value++;
+                    }
                     SendData = SendDataLarge[index];
                     SendDataChunk();
                     index++;
                 }
                 else
                 {
+                    if(progressBar1.Value >= 1)
+                    {
+                        serialPort1.Write(Convert.ToChar(10).ToString());
+                    }
                     index = 0;
                     list = 0;
                     SendDataLarge.Clear();
+                    bFileSend.Enabled = true;
                 }
+            }
+            else if (ReceiveData.Contains(Convert.ToChar(5).ToString()))
+            {
+                panel2.Show();
+                bSendFile.Enabled = false;
+                progressBar1.Value = 10;
+                ReceiveData = ReceiveData.Replace(Convert.ToChar(5).ToString(), "");
+                lFileName.Text = ReceiveData;
+                bAccept.Enabled = true;
+                bReject.Enabled = true;
+                bFileSend.Enabled = false;
+                bSelectFile.Enabled = false;
+                ReceiveData = "";
+            }
+            else if (ReceiveData.Contains(Convert.ToChar(6).ToString()))
+            {
+                progressBar1.Value = 25;
+                FileStream stream = File.OpenRead(OpenFile);
+                fileBytes = new byte[stream.Length];
+                stream.Read(fileBytes, 0, fileBytes.Length);
+                stream.Close();
+                SendData = Convert.ToBase64String(fileBytes);
+                BreakupDate();
+                ReceiveData = "";
+            }
+            else if (ReceiveData.Contains(Convert.ToChar(7).ToString()))
+            {
+                progressBar1.Value = 0;
+                bFileSend.Enabled = true;
+                MessageBox.Show("Outgoing Connection Rejected");
+                ReceiveData = "";
+            }
+            else if (ReceiveData.Contains(Convert.ToChar(10).ToString()))
+            {
+                ReceiveData = ReceiveData.Replace(Convert.ToChar(10).ToString(), "");
+                fileBytes = Convert.FromBase64String(data);
+                using (Stream file = File.OpenWrite(Directory.GetCurrentDirectory() + "/" + lFileName.Text))
+                {
+                    file.Write(fileBytes, 0, fileBytes.Length);
+                }
+                progressBar1.Value = 100;
+                MessageBox.Show("File Received");
+                progressBar1.Value = 0;
+                panel2.Hide();
+                serialPort1.Write(Convert.ToChar(9).ToString());
+                data = "";
+            }
+            else if (ReceiveData.Contains(Convert.ToChar(9).ToString()))
+            {
+                progressBar1.Value = 100;
+                MessageBox.Show("File Sent");
+                progressBar1.Value = 0;
+                bSendFile.Enabled = true;
             }
             else if (cBoxDebug.Checked)
             {
@@ -409,10 +503,57 @@ namespace Serial_Port_Communications_Program
             }
         }
 
-        private void bAdvanced_Click(object sender, EventArgs e)
+        private void bSendFile_Click(object sender, EventArgs e)
         {
-            Form2 Advanced = new Form2();
-            Advanced.Show();
+            flag *= -1;
+            if (flag == 1)
+                panel2.Show();
+            else
+                panel2.Hide();
+            bAccept.Enabled = false;
+            bReject.Enabled = false;
+            bFileSend.Enabled = false;
+            bSelectFile.Enabled = true;
+            lFileName.Text = "Select File";
+        }
+
+        private void bSelectFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                OpenFile = openFileDialog.FileName;
+                lFileName.Text = Path.GetFileName(OpenFile);
+                bFileSend.Enabled = true;
+            }
+        }
+
+        private void bFileSend_Click(object sender, EventArgs e)
+        {
+            SendBack = lFileName.Text + Convert.ToChar(5).ToString();
+            serialPort1.Write(SendBack);
+            progressBar1.Value = 10;
+            bSendFile.Enabled = false;
+            bFileSend.Enabled = false;
+        }
+
+        private void bAccept_Click(object sender, EventArgs e)
+        {
+            SendBack = Convert.ToChar(6).ToString();
+            serialPort1.Write(SendBack);
+            bAccept.Enabled = false;
+            bReject.Enabled = false;
+            progressBar1.Value = 25;
+        }
+
+        private void bReject_Click(object sender, EventArgs e)
+        {
+            SendBack = Convert.ToChar(7).ToString();
+            serialPort1.Write(SendBack);
+            bAccept.Enabled = false;
+            bReject.Enabled = false;
+            progressBar1.Value = 0;
+            panel2.Hide();
         }
     }
 }
