@@ -30,6 +30,9 @@ namespace Serial_Port_Communications_Program
         decimal Rate;
         string RateS;
         int Delayms;
+        List<string> SendDataLarge = new List<string>();
+        int index = 0;
+        int list = 0;
 
         public Form1()
         {
@@ -51,6 +54,7 @@ namespace Serial_Port_Communications_Program
             cBoxComport.Items.AddRange(SerialPort.GetPortNames());
             serialPort1.NewLine = Convert.ToChar(1).ToString();
             bDisconnect.Enabled = false;
+            bAdvanced.Enabled = false;
         }
 
         private void bConnect_Click(object sender, EventArgs e)
@@ -80,6 +84,7 @@ namespace Serial_Port_Communications_Program
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
                 tBoxDelay.Enabled = false;
+                bAdvanced.Enabled = true;
             }
 
             catch (Exception err)
@@ -123,31 +128,22 @@ namespace Serial_Port_Communications_Program
             if (serialPort1.IsOpen)
             {
                 SendData = tBoxSend.Text;
-                if (SendData.Length >= 4096)
+                for (int i = 0; i < SendData.Length; i += 100)
                 {
-                    MessageBox.Show("The message is too large! Reduce the size and try again", "Character Limit", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-
-                    if (cBoxNewline.Checked)
+                    if ((i + 100) < SendData.Length)
                     {
-                        serialPort1.Write(Convert.ToChar(2).ToString());
-                        Thread.Sleep(Delayms);
-                        serialPort1.WriteLine(SendData);
-                        Thread.Sleep(Delayms);
-                        serialPort1.Write(Convert.ToChar(3).ToString());
+                        SendDataLarge.Add(SendData.Substring(i, 100));
+                        list++;
                     }
-
                     else
                     {
-                        serialPort1.Write(Convert.ToChar(2).ToString());
-                        Thread.Sleep(Delayms);
-                        serialPort1.Write(SendData);
-                        Thread.Sleep(Delayms);
-                        serialPort1.Write(Convert.ToChar(3).ToString());
+                        SendDataLarge.Add(SendData.Substring(i));
+                        list++;
                     }
                 }
+                SendData = SendDataLarge[index];
+                SendDataChunk();
+                index++;
                 if (cBoxSave.Checked)
                 {
                     try
@@ -163,6 +159,27 @@ namespace Serial_Port_Communications_Program
                         MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
+        }
+
+        private void SendDataChunk()
+        {
+            if (cBoxNewline.Checked)
+            {
+                serialPort1.Write(Convert.ToChar(2).ToString());
+                Thread.Sleep(Delayms);
+                serialPort1.WriteLine(SendData);
+                Thread.Sleep(Delayms);
+                serialPort1.Write(Convert.ToChar(3).ToString());
+            }
+
+            else
+            {
+                serialPort1.Write(Convert.ToChar(2).ToString());
+                Thread.Sleep(Delayms);
+                serialPort1.Write(SendData);
+                Thread.Sleep(Delayms);
+                serialPort1.Write(Convert.ToChar(3).ToString());
             }
         }
 
@@ -227,12 +244,24 @@ namespace Serial_Port_Communications_Program
                 lChar.Text = (ReceiveDatal).ToString();
                 CalcRate();
                 ReceiveData = "";
+                if (index != list)
+                {
+                    SendData = SendDataLarge[index];
+                    SendDataChunk();
+                    index++;
+                }
+                else
+                {
+                    index = 0;
+                    list = 0;
+                    SendDataLarge.Clear();
+                }
             }
-            //else
-            //{
-               // Processing();
-            //}
-            
+            else if (cBoxDebug.Checked)
+            {
+                Processing();
+            }
+
             void Processing()
             {
                 if (ReceiveData.Contains(Convert.ToChar(1).ToString()))
@@ -378,6 +407,12 @@ namespace Serial_Port_Communications_Program
             {
                 tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
             }
+        }
+
+        private void bAdvanced_Click(object sender, EventArgs e)
+        {
+            Form2 Advanced = new Form2();
+            Advanced.Show();
         }
     }
 }

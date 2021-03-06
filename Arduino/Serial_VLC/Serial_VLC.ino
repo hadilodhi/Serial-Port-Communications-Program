@@ -126,8 +126,11 @@ void Calibrate()
     delay(50);
     delay(50);
   }
-  LDRAvg = (LDRMax + LDRMin) / 2;
+  LDRAvg = ((LDRMax + LDRMin) / 2);
   digitalWrite(TRANSMIT_LED, HIGH); //Return to IDLE state
+//  Serial.println(LDRMax);
+//  Serial.println(LDRMin);
+//  Serial.println(LDRAvg);
 }
 
 void LDR()

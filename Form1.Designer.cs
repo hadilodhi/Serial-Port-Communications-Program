@@ -45,6 +45,7 @@
             this.cBoxRestart = new System.Windows.Forms.CheckBox();
             this.tBoxReceive = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cBoxDebug = new System.Windows.Forms.CheckBox();
             this.cBoxCleardata = new System.Windows.Forms.CheckBox();
             this.bClear2 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -71,6 +72,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tBoxDelay = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.bAdvanced = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -162,9 +164,9 @@
             // 
             // bConnect
             // 
-            this.bConnect.Location = new System.Drawing.Point(6, 21);
+            this.bConnect.Location = new System.Drawing.Point(8, 15);
             this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(98, 46);
+            this.bConnect.Size = new System.Drawing.Size(98, 36);
             this.bConnect.TabIndex = 2;
             this.bConnect.Text = "Connect";
             this.bConnect.UseVisualStyleBackColor = true;
@@ -172,9 +174,9 @@
             // 
             // bDisconnect
             // 
-            this.bDisconnect.Location = new System.Drawing.Point(6, 73);
+            this.bDisconnect.Location = new System.Drawing.Point(8, 55);
             this.bDisconnect.Name = "bDisconnect";
-            this.bDisconnect.Size = new System.Drawing.Size(98, 44);
+            this.bDisconnect.Size = new System.Drawing.Size(98, 38);
             this.bDisconnect.TabIndex = 3;
             this.bDisconnect.Text = "Disconnect";
             this.bDisconnect.UseVisualStyleBackColor = true;
@@ -183,9 +185,9 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.lStatus);
-            this.groupBox7.Location = new System.Drawing.Point(118, 9);
+            this.groupBox7.Location = new System.Drawing.Point(118, 21);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(142, 91);
+            this.groupBox7.Size = new System.Drawing.Size(142, 75);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Status";
@@ -194,7 +196,7 @@
             // 
             this.lStatus.AutoSize = true;
             this.lStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lStatus.Location = new System.Drawing.Point(6, 38);
+            this.lStatus.Location = new System.Drawing.Point(6, 31);
             this.lStatus.Name = "lStatus";
             this.lStatus.Size = new System.Drawing.Size(124, 20);
             this.lStatus.TabIndex = 0;
@@ -202,13 +204,14 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.bAdvanced);
             this.groupBox6.Controls.Add(this.cBoxRestart);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.bDisconnect);
             this.groupBox6.Controls.Add(this.bConnect);
-            this.groupBox6.Location = new System.Drawing.Point(13, 233);
+            this.groupBox6.Location = new System.Drawing.Point(13, 231);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(266, 133);
+            this.groupBox6.Size = new System.Drawing.Size(266, 149);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
             // 
@@ -217,7 +220,7 @@
             this.cBoxRestart.AutoSize = true;
             this.cBoxRestart.Checked = true;
             this.cBoxRestart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cBoxRestart.Location = new System.Drawing.Point(147, 104);
+            this.cBoxRestart.Location = new System.Drawing.Point(148, 107);
             this.cBoxRestart.Name = "cBoxRestart";
             this.cBoxRestart.Size = new System.Drawing.Size(76, 21);
             this.cBoxRestart.TabIndex = 5;
@@ -235,6 +238,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.cBoxDebug);
             this.groupBox5.Controls.Add(this.cBoxCleardata);
             this.groupBox5.Controls.Add(this.bClear2);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -243,6 +247,16 @@
             this.groupBox5.Size = new System.Drawing.Size(497, 90);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
+            // 
+            // cBoxDebug
+            // 
+            this.cBoxDebug.AutoSize = true;
+            this.cBoxDebug.Location = new System.Drawing.Point(388, 37);
+            this.cBoxDebug.Name = "cBoxDebug";
+            this.cBoxDebug.Size = new System.Drawing.Size(72, 21);
+            this.cBoxDebug.TabIndex = 3;
+            this.cBoxDebug.Text = "Debug";
+            this.cBoxDebug.UseVisualStyleBackColor = true;
             // 
             // cBoxCleardata
             // 
@@ -360,7 +374,7 @@
             this.groupBox8.Controls.Add(this.label10);
             this.groupBox8.Controls.Add(this.lTime);
             this.groupBox8.Controls.Add(this.label7);
-            this.groupBox8.Location = new System.Drawing.Point(13, 372);
+            this.groupBox8.Location = new System.Drawing.Point(13, 381);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(266, 145);
             this.groupBox8.TabIndex = 4;
@@ -374,7 +388,7 @@
             "6",
             "7",
             "8"});
-            this.cBoxDatabits.Location = new System.Drawing.Point(119, 88);
+            this.cBoxDatabits.Location = new System.Drawing.Point(119, 93);
             this.cBoxDatabits.Name = "cBoxDatabits";
             this.cBoxDatabits.Size = new System.Drawing.Size(121, 24);
             this.cBoxDatabits.TabIndex = 3;
@@ -383,7 +397,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 32);
+            this.label1.Location = new System.Drawing.Point(27, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 17);
             this.label1.TabIndex = 0;
@@ -392,7 +406,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 92);
+            this.label2.Location = new System.Drawing.Point(27, 97);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 17);
             this.label2.TabIndex = 2;
@@ -401,7 +415,7 @@
             // cBoxComport
             // 
             this.cBoxComport.FormattingEnabled = true;
-            this.cBoxComport.Location = new System.Drawing.Point(119, 28);
+            this.cBoxComport.Location = new System.Drawing.Point(119, 33);
             this.cBoxComport.Name = "cBoxComport";
             this.cBoxComport.Size = new System.Drawing.Size(121, 24);
             this.cBoxComport.TabIndex = 1;
@@ -409,7 +423,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(27, 122);
+            this.label4.Location = new System.Drawing.Point(27, 127);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 17);
             this.label4.TabIndex = 6;
@@ -421,7 +435,7 @@
             this.cBoxStopbits.Items.AddRange(new object[] {
             "One",
             "Two"});
-            this.cBoxStopbits.Location = new System.Drawing.Point(119, 118);
+            this.cBoxStopbits.Location = new System.Drawing.Point(119, 123);
             this.cBoxStopbits.Name = "cBoxStopbits";
             this.cBoxStopbits.Size = new System.Drawing.Size(121, 24);
             this.cBoxStopbits.TabIndex = 7;
@@ -434,7 +448,7 @@
             "None",
             "Odd",
             "Even"});
-            this.cBoxParitybits.Location = new System.Drawing.Point(119, 148);
+            this.cBoxParitybits.Location = new System.Drawing.Point(119, 153);
             this.cBoxParitybits.Name = "cBoxParitybits";
             this.cBoxParitybits.Size = new System.Drawing.Size(121, 24);
             this.cBoxParitybits.TabIndex = 5;
@@ -443,7 +457,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(27, 61);
+            this.label5.Location = new System.Drawing.Point(27, 66);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 17);
             this.label5.TabIndex = 8;
@@ -452,7 +466,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 152);
+            this.label3.Location = new System.Drawing.Point(27, 157);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 17);
             this.label3.TabIndex = 4;
@@ -475,7 +489,7 @@
             "38400",
             "57600",
             "115200"});
-            this.cBoxBaudrate.Location = new System.Drawing.Point(119, 57);
+            this.cBoxBaudrate.Location = new System.Drawing.Point(119, 62);
             this.cBoxBaudrate.Name = "cBoxBaudrate";
             this.cBoxBaudrate.Size = new System.Drawing.Size(121, 24);
             this.cBoxBaudrate.TabIndex = 9;
@@ -497,7 +511,7 @@
             this.groupBox1.Controls.Add(this.cBoxDatabits);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(267, 224);
+            this.groupBox1.Size = new System.Drawing.Size(267, 213);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Com Port Controls";
@@ -505,7 +519,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 180);
+            this.label6.Location = new System.Drawing.Point(27, 185);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(76, 17);
             this.label6.TabIndex = 11;
@@ -513,7 +527,7 @@
             // 
             // tBoxDelay
             // 
-            this.tBoxDelay.Location = new System.Drawing.Point(119, 177);
+            this.tBoxDelay.Location = new System.Drawing.Point(119, 182);
             this.tBoxDelay.Name = "tBoxDelay";
             this.tBoxDelay.Size = new System.Drawing.Size(121, 22);
             this.tBoxDelay.TabIndex = 10;
@@ -532,6 +546,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 533);
             this.panel1.TabIndex = 5;
+            // 
+            // bAdvanced
+            // 
+            this.bAdvanced.Location = new System.Drawing.Point(8, 95);
+            this.bAdvanced.Name = "bAdvanced";
+            this.bAdvanced.Size = new System.Drawing.Size(98, 38);
+            this.bAdvanced.TabIndex = 6;
+            this.bAdvanced.Text = "Advanced";
+            this.bAdvanced.UseVisualStyleBackColor = true;
+            this.bAdvanced.Click += new System.EventHandler(this.bAdvanced_Click);
             // 
             // Form1
             // 
@@ -609,6 +633,8 @@
         private System.Windows.Forms.TextBox tBoxDelay;
         private System.Windows.Forms.Label tBoxLength;
         private System.Windows.Forms.CheckBox cBoxRestart;
+        private System.Windows.Forms.CheckBox cBoxDebug;
+        private System.Windows.Forms.Button bAdvanced;
     }
 }
 
