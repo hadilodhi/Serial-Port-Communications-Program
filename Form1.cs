@@ -32,8 +32,8 @@ namespace Serial_Port_Communications_Program
         int Delayms;
         List<string> SendDataLarge = new List<string>();
         int index = 0;
-        int list = 0;
-        int percent;
+        decimal list = 0;
+        decimal percent;
         int flag = -1;
         string OpenFile;
         byte[] fileBytes;
@@ -172,15 +172,25 @@ namespace Serial_Port_Communications_Program
             index++;
             if (progressBar1.Value >= 1)
             {
-                lIndexList.Text = index + "/" + list;
-                percent = (index / list / 100) * 95;
-                progressBar1.Value = percent;
-                lPercentage.Text = percent.ToString();
+                CalcProgress();
                 SendBack = index + "/" + list + Convert.ToChar(11).ToString();
-                //serialPort1.Write(SendBack);
-                //Thread.Sleep(500);
+                serialPort1.Write(SendBack);
+                Thread.Sleep(500);
             }
             SendDataChunk();
+        }
+
+        private void CalcProgress()
+        {
+            lIndexList.Text = index + "/" + list;
+            percent = index / list;
+            percent *= 95;
+            if (percent <=1 || percent >= 95)
+            {
+                percent = 95;
+            }
+            progressBar1.Value = decimal.ToInt32(percent);
+            lPercentage.Text = percent.ToString("#") + " %";
         }
 
         private void SendDataChunk()
@@ -235,14 +245,11 @@ namespace Serial_Port_Communications_Program
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
                 if(ReceiveData.Contains(Convert.ToChar(8).ToString()))
                 {
-                    //if (progressBar1.Value >= 1)
-                    //{
-                    //    index++;
-                    //    lIndexList.Text = index + "/" + list;
-                    //    percent = (index / list / 100) * 95;
-                    //    progressBar1.Value = percent;
-                    //    lPercentage.Text = percent.ToString();
-                    //}
+                    if (progressBar1.Value >= 1)
+                    {
+                        index++;
+                        CalcProgress();
+                    }
                     ReceiveData = ReceiveData.Replace(Convert.ToChar(8).ToString(), "");
                     data += ReceiveData;
                     ReceiveDatal = ReceiveData.Length;
@@ -297,16 +304,14 @@ namespace Serial_Port_Communications_Program
                     SendData = SendDataLarge[index];
                     SendDataChunk();
                     index++;
-                    lIndexList.Text = index + "/" + list;
-                    percent = (index / list / 100) * 95;
-                    progressBar1.Value = percent;
-                    lPercentage.Text = percent.ToString();
+                    if (flag == 1)
+                        CalcProgress();
                 }
                 else
                 {
                     if(progressBar1.Value >= 1)
                     {
-                        serialPort1.Write(Convert.ToChar(10).ToString());
+                        serialPort1.Write(Convert.ToChar(12).ToString());
                     }
                     index = 0;
                     list = 0;
@@ -348,9 +353,9 @@ namespace Serial_Port_Communications_Program
                 MessageBox.Show("Outgoing Connection Rejected");
                 ReceiveData = "";
             }
-            else if (ReceiveData.Contains(Convert.ToChar(10).ToString()))
+            else if (ReceiveData.Contains(Convert.ToChar(12).ToString()))
             {
-                ReceiveData = ReceiveData.Replace(Convert.ToChar(10).ToString(), "");
+                ReceiveData = ReceiveData.Replace(Convert.ToChar(12).ToString(), "");
                 fileBytes = Convert.FromBase64String(data);
                 using (Stream file = File.OpenWrite(Directory.GetCurrentDirectory() + "/" + lFileName.Text))
                 {
@@ -373,17 +378,15 @@ namespace Serial_Port_Communications_Program
                 lPercentage.Text = "0 %";
                 bSendFile.Enabled = true;
             }
-            //else if (ReceiveData.Contains(Convert.ToChar(11).ToString()))
-            //{
-            //    ReceiveData = ReceiveData.Replace(Convert.ToChar(11).ToString(), "");
-            //    list = Int32.Parse(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
-            //    index = Int32.Parse(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
-            //    lIndexList.Text = index + "/" + list;
-            //    percent = (index / list / 100) * 95;
-            //    progressBar1.Value = percent;
-            //    lPercentage.Text = percent.ToString();
-            //    ReceiveData = "";
-            //}
+            else if (ReceiveData.Contains(Convert.ToChar(11).ToString()))
+            {
+                ReceiveData = ReceiveData.Replace(Convert.ToChar(11).ToString(), "");
+                list = Int32.Parse(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
+                index = Int32.Parse(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
+                if (flag == 1)
+                    CalcProgress();
+                ReceiveData = "";
+            }
             else if (cBoxDebug.Checked)
             {
                 Processing();
