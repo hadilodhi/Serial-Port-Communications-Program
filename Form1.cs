@@ -33,6 +33,7 @@ namespace Serial_Port_Communications_Program
         List<string> SendDataLarge = new List<string>();
         int index = 0;
         int list = 0;
+        int percent;
         int flag = -1;
         string OpenFile;
         byte[] fileBytes;
@@ -168,8 +169,18 @@ namespace Serial_Port_Communications_Program
                 }
             }
             SendData = SendDataLarge[index];
-            SendDataChunk();
             index++;
+            if (progressBar1.Value >= 1)
+            {
+                lIndexList.Text = index + "/" + list;
+                percent = (index / list / 100) * 95;
+                progressBar1.Value = percent;
+                lPercentage.Text = percent.ToString();
+                SendBack = index + "/" + list + Convert.ToChar(11).ToString();
+                //serialPort1.Write(SendBack);
+                //Thread.Sleep(500);
+            }
+            SendDataChunk();
         }
 
         private void SendDataChunk()
@@ -224,19 +235,24 @@ namespace Serial_Port_Communications_Program
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
                 if(ReceiveData.Contains(Convert.ToChar(8).ToString()))
                 {
-                    if (progressBar1.Value <= 90)
-                    {
-                        progressBar1.Value++;
-                    }
+                    //if (progressBar1.Value >= 1)
+                    //{
+                    //    index++;
+                    //    lIndexList.Text = index + "/" + list;
+                    //    percent = (index / list / 100) * 95;
+                    //    progressBar1.Value = percent;
+                    //    lPercentage.Text = percent.ToString();
+                    //}
                     ReceiveData = ReceiveData.Replace(Convert.ToChar(8).ToString(), "");
                     data += ReceiveData;
+                    ReceiveDatal = ReceiveData.Length;
                 }
                 else
                 {
                     Processing();
                 }
                 elapsedms = stopwatch.ElapsedMilliseconds;
-                if (elapsedms == 0)
+                if (elapsedms <= 0 || elapsedms >=10000)
                 {
                     elapsedms = 1;
                 }
@@ -278,13 +294,13 @@ namespace Serial_Port_Communications_Program
                 ReceiveData = "";
                 if (index != list)
                 {
-                    if (progressBar1.Value >= 1 && progressBar1.Value <= 90)
-                    {
-                        progressBar1.Value++;
-                    }
                     SendData = SendDataLarge[index];
                     SendDataChunk();
                     index++;
+                    lIndexList.Text = index + "/" + list;
+                    percent = (index / list / 100) * 95;
+                    progressBar1.Value = percent;
+                    lPercentage.Text = percent.ToString();
                 }
                 else
                 {
@@ -302,7 +318,8 @@ namespace Serial_Port_Communications_Program
             {
                 panel2.Show();
                 bSendFile.Enabled = false;
-                progressBar1.Value = 10;
+                progressBar1.Value = 1;
+                lPercentage.Text = "1 %";
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(5).ToString(), "");
                 lFileName.Text = ReceiveData;
                 bAccept.Enabled = true;
@@ -313,7 +330,8 @@ namespace Serial_Port_Communications_Program
             }
             else if (ReceiveData.Contains(Convert.ToChar(6).ToString()))
             {
-                progressBar1.Value = 25;
+                progressBar1.Value = 2;
+                lPercentage.Text = "2 %";
                 FileStream stream = File.OpenRead(OpenFile);
                 fileBytes = new byte[stream.Length];
                 stream.Read(fileBytes, 0, fileBytes.Length);
@@ -325,6 +343,7 @@ namespace Serial_Port_Communications_Program
             else if (ReceiveData.Contains(Convert.ToChar(7).ToString()))
             {
                 progressBar1.Value = 0;
+                lPercentage.Text = "0 %";
                 bFileSend.Enabled = true;
                 MessageBox.Show("Outgoing Connection Rejected");
                 ReceiveData = "";
@@ -338,6 +357,7 @@ namespace Serial_Port_Communications_Program
                     file.Write(fileBytes, 0, fileBytes.Length);
                 }
                 progressBar1.Value = 100;
+                lPercentage.Text = "100 %";
                 MessageBox.Show("File Received");
                 progressBar1.Value = 0;
                 panel2.Hide();
@@ -347,10 +367,23 @@ namespace Serial_Port_Communications_Program
             else if (ReceiveData.Contains(Convert.ToChar(9).ToString()))
             {
                 progressBar1.Value = 100;
+                lPercentage.Text = "100 %";
                 MessageBox.Show("File Sent");
                 progressBar1.Value = 0;
+                lPercentage.Text = "0 %";
                 bSendFile.Enabled = true;
             }
+            //else if (ReceiveData.Contains(Convert.ToChar(11).ToString()))
+            //{
+            //    ReceiveData = ReceiveData.Replace(Convert.ToChar(11).ToString(), "");
+            //    list = Int32.Parse(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
+            //    index = Int32.Parse(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
+            //    lIndexList.Text = index + "/" + list;
+            //    percent = (index / list / 100) * 95;
+            //    progressBar1.Value = percent;
+            //    lPercentage.Text = percent.ToString();
+            //    ReceiveData = "";
+            //}
             else if (cBoxDebug.Checked)
             {
                 Processing();
@@ -532,7 +565,8 @@ namespace Serial_Port_Communications_Program
         {
             SendBack = lFileName.Text + Convert.ToChar(5).ToString();
             serialPort1.Write(SendBack);
-            progressBar1.Value = 10;
+            progressBar1.Value = 1;
+            lPercentage.Text = "1 %";
             bSendFile.Enabled = false;
             bFileSend.Enabled = false;
         }
@@ -543,7 +577,8 @@ namespace Serial_Port_Communications_Program
             serialPort1.Write(SendBack);
             bAccept.Enabled = false;
             bReject.Enabled = false;
-            progressBar1.Value = 25;
+            progressBar1.Value = 2;
+            lPercentage.Text = "2 %";
         }
 
         private void bReject_Click(object sender, EventArgs e)
@@ -553,6 +588,7 @@ namespace Serial_Port_Communications_Program
             bAccept.Enabled = false;
             bReject.Enabled = false;
             progressBar1.Value = 0;
+            lPercentage.Text = "0 %";
             panel2.Hide();
         }
     }

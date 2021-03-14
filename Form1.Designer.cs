@@ -72,16 +72,18 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.bFileSend = new System.Windows.Forms.Button();
+            this.bSelectFile = new System.Windows.Forms.Button();
+            this.bReject = new System.Windows.Forms.Button();
+            this.bAccept = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lFileName = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tBoxDelay = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.bAccept = new System.Windows.Forms.Button();
-            this.bReject = new System.Windows.Forms.Button();
-            this.bSelectFile = new System.Windows.Forms.Button();
-            this.bFileSend = new System.Windows.Forms.Button();
+            this.lIndexList = new System.Windows.Forms.Label();
+            this.lPercentage = new System.Windows.Forms.Label();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -548,6 +550,8 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.lPercentage);
+            this.groupBox9.Controls.Add(this.lIndexList);
             this.groupBox9.Controls.Add(this.bFileSend);
             this.groupBox9.Controls.Add(this.bSelectFile);
             this.groupBox9.Controls.Add(this.bReject);
@@ -561,6 +565,46 @@
             this.groupBox9.TabIndex = 0;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "File Transfer";
+            // 
+            // bFileSend
+            // 
+            this.bFileSend.Location = new System.Drawing.Point(132, 59);
+            this.bFileSend.Name = "bFileSend";
+            this.bFileSend.Size = new System.Drawing.Size(88, 41);
+            this.bFileSend.TabIndex = 9;
+            this.bFileSend.Text = "Send";
+            this.bFileSend.UseVisualStyleBackColor = true;
+            this.bFileSend.Click += new System.EventHandler(this.bFileSend_Click);
+            // 
+            // bSelectFile
+            // 
+            this.bSelectFile.Location = new System.Drawing.Point(30, 58);
+            this.bSelectFile.Name = "bSelectFile";
+            this.bSelectFile.Size = new System.Drawing.Size(88, 41);
+            this.bSelectFile.TabIndex = 8;
+            this.bSelectFile.Text = "Select File";
+            this.bSelectFile.UseVisualStyleBackColor = true;
+            this.bSelectFile.Click += new System.EventHandler(this.bSelectFile_Click);
+            // 
+            // bReject
+            // 
+            this.bReject.Location = new System.Drawing.Point(132, 146);
+            this.bReject.Name = "bReject";
+            this.bReject.Size = new System.Drawing.Size(88, 42);
+            this.bReject.TabIndex = 7;
+            this.bReject.Text = "Reject";
+            this.bReject.UseVisualStyleBackColor = true;
+            this.bReject.Click += new System.EventHandler(this.bReject_Click);
+            // 
+            // bAccept
+            // 
+            this.bAccept.Location = new System.Drawing.Point(30, 146);
+            this.bAccept.Name = "bAccept";
+            this.bAccept.Size = new System.Drawing.Size(89, 42);
+            this.bAccept.TabIndex = 6;
+            this.bAccept.Text = "Accept";
+            this.bAccept.UseVisualStyleBackColor = true;
+            this.bAccept.Click += new System.EventHandler(this.bAccept_Click);
             // 
             // progressBar1
             // 
@@ -618,45 +662,23 @@
             this.panel1.Size = new System.Drawing.Size(800, 533);
             this.panel1.TabIndex = 5;
             // 
-            // bAccept
+            // lIndexList
             // 
-            this.bAccept.Location = new System.Drawing.Point(30, 146);
-            this.bAccept.Name = "bAccept";
-            this.bAccept.Size = new System.Drawing.Size(89, 42);
-            this.bAccept.TabIndex = 6;
-            this.bAccept.Text = "Accept";
-            this.bAccept.UseVisualStyleBackColor = true;
-            this.bAccept.Click += new System.EventHandler(this.bAccept_Click);
+            this.lIndexList.AutoSize = true;
+            this.lIndexList.Location = new System.Drawing.Point(174, 31);
+            this.lIndexList.Name = "lIndexList";
+            this.lIndexList.Size = new System.Drawing.Size(28, 17);
+            this.lIndexList.TabIndex = 10;
+            this.lIndexList.Text = "0/0";
             // 
-            // bReject
+            // lPercentage
             // 
-            this.bReject.Location = new System.Drawing.Point(132, 146);
-            this.bReject.Name = "bReject";
-            this.bReject.Size = new System.Drawing.Size(88, 42);
-            this.bReject.TabIndex = 7;
-            this.bReject.Text = "Reject";
-            this.bReject.UseVisualStyleBackColor = true;
-            this.bReject.Click += new System.EventHandler(this.bReject_Click);
-            // 
-            // bSelectFile
-            // 
-            this.bSelectFile.Location = new System.Drawing.Point(30, 58);
-            this.bSelectFile.Name = "bSelectFile";
-            this.bSelectFile.Size = new System.Drawing.Size(88, 41);
-            this.bSelectFile.TabIndex = 8;
-            this.bSelectFile.Text = "Select File";
-            this.bSelectFile.UseVisualStyleBackColor = true;
-            this.bSelectFile.Click += new System.EventHandler(this.bSelectFile_Click);
-            // 
-            // bFileSend
-            // 
-            this.bFileSend.Location = new System.Drawing.Point(132, 59);
-            this.bFileSend.Name = "bFileSend";
-            this.bFileSend.Size = new System.Drawing.Size(88, 41);
-            this.bFileSend.TabIndex = 9;
-            this.bFileSend.Text = "Send";
-            this.bFileSend.UseVisualStyleBackColor = true;
-            this.bFileSend.Click += new System.EventHandler(this.bFileSend_Click);
+            this.lPercentage.AutoSize = true;
+            this.lPercentage.Location = new System.Drawing.Point(109, 112);
+            this.lPercentage.Name = "lPercentage";
+            this.lPercentage.Size = new System.Drawing.Size(32, 17);
+            this.lPercentage.TabIndex = 11;
+            this.lPercentage.Text = "0 %";
             // 
             // Form1
             // 
@@ -748,6 +770,8 @@
         private System.Windows.Forms.Button bSelectFile;
         private System.Windows.Forms.Button bReject;
         private System.Windows.Forms.Button bFileSend;
+        private System.Windows.Forms.Label lPercentage;
+        private System.Windows.Forms.Label lIndexList;
     }
 }
 
