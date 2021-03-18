@@ -29,12 +29,13 @@ namespace Serial_Port_Communications_Program
         decimal ReceiveDatal;
         decimal Rate;
         string RateS;
-        int Delayms;
+        int PacketSize;
         List<string> SendDataLarge = new List<string>();
         int index = 0;
         decimal list = 0;
         decimal percent;
         int flag = -1;
+        int flag1 = 1;
         string OpenFile;
         byte[] fileBytes;
         string data;
@@ -56,6 +57,7 @@ namespace Serial_Port_Communications_Program
             groupBox4.Top = 225;
 
             panel2.Hide();
+            panel3.Hide();
 
             cBoxComport.Items.AddRange(SerialPort.GetPortNames());
             serialPort1.NewLine = Convert.ToChar(1).ToString();
@@ -72,7 +74,7 @@ namespace Serial_Port_Communications_Program
                 serialPort1.DataBits = Convert.ToInt32(cBoxDatabits.Text);
                 serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cBoxStopbits.Text);
                 serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), cBoxParitybits.Text);
-                Delayms = Convert.ToInt32(tBoxDelay.Text);
+                PacketSize = Convert.ToInt32(tBoxSize.Text);
 
                 serialPort1.BaudRate = 9600;
                 serialPort1.Open();
@@ -89,7 +91,7 @@ namespace Serial_Port_Communications_Program
                 cBoxDatabits.Enabled = false;
                 cBoxStopbits.Enabled = false;
                 cBoxParitybits.Enabled = false;
-                tBoxDelay.Enabled = false;
+                tBoxSize.Enabled = false;
                 bSendFile.Enabled = true;
             }
 
@@ -115,26 +117,19 @@ namespace Serial_Port_Communications_Program
                 cBoxDatabits.Enabled = true;
                 cBoxStopbits.Enabled = true;
                 cBoxParitybits.Enabled = true;
-                tBoxDelay.Enabled = true;
-
-                Thread.Sleep(Delayms);
-                if (cBoxRestart.Checked)
-                {
-                    Application.Restart();
-                }
-                else
-                {
-                    Application.Exit();
-                }
+                tBoxSize.Enabled = true;
             }
         }
 
         private void bSend_Click(object sender, EventArgs e)
         {
+            index = 0;
+            list = 0;
+            SendDataLarge.Clear();
             if (serialPort1.IsOpen)
             {
                 SendData = tBoxSend.Text;
-                BreakupDate();
+                BreakupData();
                 if (cBoxSave.Checked)
                 {
                     try
@@ -153,13 +148,13 @@ namespace Serial_Port_Communications_Program
             }
         }
 
-        private void BreakupDate()
+        private void BreakupData()
         {
-            for (int i = 0; i < SendData.Length; i += 100)
+            for (int i = 0; i < SendData.Length; i += PacketSize)
             {
-                if ((i + 100) < SendData.Length)
+                if ((i + PacketSize) < SendData.Length)
                 {
-                    SendDataLarge.Add(SendData.Substring(i, 100));
+                    SendDataLarge.Add(SendData.Substring(i, PacketSize));
                     list++;
                 }
                 else
@@ -175,22 +170,27 @@ namespace Serial_Port_Communications_Program
                 CalcProgress();
                 SendBack = index + "/" + list + Convert.ToChar(11).ToString();
                 serialPort1.Write(SendBack);
-                Thread.Sleep(500);
             }
-            SendDataChunk();
+            else
+            {
+                SendDataChunk();
+            }
         }
 
         private void CalcProgress()
         {
-            lIndexList.Text = index + "/" + list;
-            percent = index / list;
-            percent *= 95;
-            if (percent <=1 || percent >= 95)
+            if (index >= 1 && index <= list)
             {
-                percent = 95;
+                lIndexList.Text = index + "/" + list;
+                percent = index / list;
+                percent *= 100;
+                if (percent < 1 || percent > 100)
+                {
+                    percent = 1;
+                }
+                progressBar1.Value = decimal.ToInt32(percent);
+                lPercentage.Text = percent.ToString("#") + " %";
             }
-            progressBar1.Value = decimal.ToInt32(percent);
-            lPercentage.Text = percent.ToString("#") + " %";
         }
 
         private void SendDataChunk()
@@ -198,28 +198,38 @@ namespace Serial_Port_Communications_Program
             if (cBoxNewline.Checked)
             {
                 serialPort1.Write(Convert.ToChar(2).ToString());
-                Thread.Sleep(Delayms);
+                Thread.Sleep(1);
                 serialPort1.WriteLine(SendData);
                 if(progressBar1.Value >= 1)
                 {
-                    Thread.Sleep(Delayms);
+                    Thread.Sleep(1);
                     serialPort1.Write(Convert.ToChar(8).ToString());
                 }
-                Thread.Sleep(Delayms);
+                if (cBoxDetails.Checked)
+                {
+                    Thread.Sleep(1);
+                    serialPort1.Write(Convert.ToChar(10).ToString());
+                }
+                Thread.Sleep(1);
                 serialPort1.Write(Convert.ToChar(3).ToString());
             }
 
             else
             {
                 serialPort1.Write(Convert.ToChar(2).ToString());
-                Thread.Sleep(Delayms);
+                Thread.Sleep(1);
                 serialPort1.Write(SendData);
                 if (progressBar1.Value >= 1)
                 {
-                    Thread.Sleep(Delayms);
+                    Thread.Sleep(1);
                     serialPort1.Write(Convert.ToChar(8).ToString());
                 }
-                Thread.Sleep(Delayms);
+                if (cBoxDetails.Checked)
+                {
+                    Thread.Sleep(1);
+                    serialPort1.Write(Convert.ToChar(10).ToString());
+                }
+                Thread.Sleep(1);
                 serialPort1.Write(Convert.ToChar(3).ToString());
             }
         }
@@ -243,7 +253,16 @@ namespace Serial_Port_Communications_Program
             {
                 stopwatch.Stop();
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(3).ToString(), "");
-                if(ReceiveData.Contains(Convert.ToChar(8).ToString()))
+                if (ReceiveData.Contains(Convert.ToChar(10).ToString()))
+                {
+                    ReceiveData = ReceiveData.Replace(Convert.ToChar(10).ToString(), "");
+                    flag1 = 1;
+                }
+                else
+                {
+                    flag1 = 0;
+                }
+                if (ReceiveData.Contains(Convert.ToChar(8).ToString()))
                 {
                     if (progressBar1.Value >= 1)
                     {
@@ -263,7 +282,7 @@ namespace Serial_Port_Communications_Program
                 {
                     elapsedms = 1;
                 }
-                elapsedms -= Delayms * 2;
+                elapsedms -= 1 * 2;
                 if (elapsedms <= 1000)
                 {
                     lTime.Text = elapsedms.ToString() + " ms";
@@ -275,7 +294,14 @@ namespace Serial_Port_Communications_Program
                     elapsedms *= 1000;
                 }
                 lChar.Text = (ReceiveDatal).ToString();
-                SendBack = elapsedms + "/" + ReceiveDatal + Convert.ToChar(4).ToString();
+                if (flag1 == 1)
+                {
+                    SendBack = elapsedms + "/" + ReceiveDatal + Convert.ToChar(4).ToString();
+                }
+                else
+                {
+                    SendBack = Convert.ToChar(4).ToString();
+                }
                 CalcRate();
                 serialPort1.Write(SendBack);
                 stopwatch.Reset();
@@ -284,20 +310,27 @@ namespace Serial_Port_Communications_Program
             else if (ReceiveData.Contains(Convert.ToChar(4).ToString()))
             {
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(4).ToString(), "");
-                ReceiveDatal = Convert.ToDecimal(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
-                elapsedms = Convert.ToDecimal(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
-                if (elapsedms <= 1000)
+                try
                 {
-                    lTime.Text = elapsedms.ToString() + " ms";
+                    ReceiveDatal = Convert.ToDecimal(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
+                    elapsedms = Convert.ToDecimal(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
+                    if (elapsedms <= 1000)
+                    {
+                        lTime.Text = elapsedms.ToString() + " ms";
+                    }
+                    else
+                    {
+                        elapsedms /= 1000;
+                        lTime.Text = elapsedms.ToString("#") + " s";
+                        elapsedms *= 1000;
+                    }
+                    lChar.Text = (ReceiveDatal).ToString();
+                    CalcRate();
                 }
-                else
+                catch
                 {
-                    elapsedms /= 1000;
-                    lTime.Text = elapsedms.ToString("#") + " s";
-                    elapsedms *= 1000;
+
                 }
-                lChar.Text = (ReceiveDatal).ToString();
-                CalcRate();
                 ReceiveData = "";
                 if (index != list)
                 {
@@ -305,6 +338,7 @@ namespace Serial_Port_Communications_Program
                     SendDataChunk();
                     index++;
                     if (flag == 1)
+                        if(progressBar1.Value >=1)
                         CalcProgress();
                 }
                 else
@@ -316,7 +350,6 @@ namespace Serial_Port_Communications_Program
                     index = 0;
                     list = 0;
                     SendDataLarge.Clear();
-                    bFileSend.Enabled = true;
                 }
             }
             else if (ReceiveData.Contains(Convert.ToChar(5).ToString()))
@@ -342,7 +375,7 @@ namespace Serial_Port_Communications_Program
                 stream.Read(fileBytes, 0, fileBytes.Length);
                 stream.Close();
                 SendData = Convert.ToBase64String(fileBytes);
-                BreakupDate();
+                BreakupData();
                 ReceiveData = "";
             }
             else if (ReceiveData.Contains(Convert.ToChar(7).ToString()))
@@ -352,6 +385,7 @@ namespace Serial_Port_Communications_Program
                 bFileSend.Enabled = true;
                 MessageBox.Show("Outgoing Connection Rejected");
                 ReceiveData = "";
+                bSendFile.Enabled = true;
             }
             else if (ReceiveData.Contains(Convert.ToChar(12).ToString()))
             {
@@ -365,9 +399,16 @@ namespace Serial_Port_Communications_Program
                 lPercentage.Text = "100 %";
                 MessageBox.Show("File Received");
                 progressBar1.Value = 0;
+                lPercentage.Text = "0 %";
+                index = 0;
+                list = 0;
+                lIndexList.Text = "0/0";
                 panel2.Hide();
                 serialPort1.Write(Convert.ToChar(9).ToString());
                 data = "";
+                bSendFile.Enabled = true;
+                bFileSend.Enabled = true;
+                ReceiveData = "";
             }
             else if (ReceiveData.Contains(Convert.ToChar(9).ToString()))
             {
@@ -376,16 +417,36 @@ namespace Serial_Port_Communications_Program
                 MessageBox.Show("File Sent");
                 progressBar1.Value = 0;
                 lPercentage.Text = "0 %";
+                index = 0;
+                list = 0;
+                lIndexList.Text = "0/0";
                 bSendFile.Enabled = true;
+                bFileSend.Enabled = true;
+                ReceiveData = "";
             }
             else if (ReceiveData.Contains(Convert.ToChar(11).ToString()))
             {
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(11).ToString(), "");
-                list = Int32.Parse(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
-                index = Int32.Parse(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
-                if (flag == 1)
-                    CalcProgress();
+                try
+                {
+                    list = Int32.Parse(ReceiveData.Substring(ReceiveData.IndexOf("/") + 1));
+                    index = Int32.Parse(ReceiveData.Substring(0, ReceiveData.IndexOf("/")));
+                    if (flag == 1)
+                        CalcProgress();
+                }
+                catch
+                {
+                    SendBack = lFileName.Text + Convert.ToChar(7).ToString();
+                    serialPort1.Write(SendBack);
+                }
+                SendBack = Convert.ToChar(17).ToString();
+                serialPort1.Write(SendBack);
                 ReceiveData = "";
+            }
+            else if (ReceiveData.Contains(Convert.ToChar(17).ToString()))
+            {
+                ReceiveData = "";
+                SendDataChunk();
             }
             else if (cBoxDebug.Checked)
             {
@@ -513,11 +574,11 @@ namespace Serial_Port_Communications_Program
             tBoxSend.ScrollBars = ScrollBars.Vertical;
             if (cBoxNewline.Checked)
             {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength + 2);
+                tBoxSendL.Text = Convert.ToString(tBoxSend.TextLength + 2);
             }
             else
             {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
+                tBoxSendL.Text = Convert.ToString(tBoxSend.TextLength);
             }
                 
         }
@@ -525,17 +586,18 @@ namespace Serial_Port_Communications_Program
         private void tBoxReceive_TextChanged(object sender, EventArgs e)
         {
             tBoxReceive.ScrollBars = ScrollBars.Vertical;
+            tBoxReceiveL.Text = Convert.ToString(tBoxReceive.TextLength);
         }
 
         private void cBoxNewline_CheckedChanged(object sender, EventArgs e)
         {
             if (cBoxNewline.Checked)
             {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength + 2);
+                tBoxSendL.Text = Convert.ToString(tBoxSend.TextLength + 2);
             }
             else
             {
-                tBoxLength.Text = Convert.ToString(tBoxSend.TextLength);
+                tBoxSendL.Text = Convert.ToString(tBoxSend.TextLength);
             }
         }
 
@@ -590,9 +652,22 @@ namespace Serial_Port_Communications_Program
             serialPort1.Write(SendBack);
             bAccept.Enabled = false;
             bReject.Enabled = false;
+            bSendFile.Enabled = true;
             progressBar1.Value = 0;
             lPercentage.Text = "0 %";
             panel2.Hide();
+        }
+
+        private void cBoxDetails_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cBoxDetails.Checked)
+            {
+                panel3.Hide();
+            }
+            else
+            {
+                panel3.Show();
+            }
         }
     }
 }
