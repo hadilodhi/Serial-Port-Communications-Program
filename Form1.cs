@@ -390,25 +390,42 @@ namespace Serial_Port_Communications_Program
             else if (ReceiveData.Contains(Convert.ToChar(12).ToString()))
             {
                 ReceiveData = ReceiveData.Replace(Convert.ToChar(12).ToString(), "");
-                fileBytes = Convert.FromBase64String(data);
-                using (Stream file = File.OpenWrite(Directory.GetCurrentDirectory() + "/" + lFileName.Text))
+                try
                 {
-                    file.Write(fileBytes, 0, fileBytes.Length);
+                    fileBytes = Convert.FromBase64String(data);
+                    using (Stream file = File.OpenWrite(Directory.GetCurrentDirectory() + "/" + lFileName.Text))
+                    {
+                        file.Write(fileBytes, 0, fileBytes.Length);
+                    }
+                    progressBar1.Value = 100;
+                    lPercentage.Text = "100 %";
+                    MessageBox.Show("File Received");
+                    progressBar1.Value = 0;
+                    lPercentage.Text = "0 %";
+                    index = 0;
+                    list = 0;
+                    lIndexList.Text = "0/0";
+                    panel2.Hide();
+                    serialPort1.Write(Convert.ToChar(9).ToString());
+                    data = "";
+                    bSendFile.Enabled = true;
+                    ReceiveData = "";
                 }
-                progressBar1.Value = 100;
-                lPercentage.Text = "100 %";
-                MessageBox.Show("File Received");
-                progressBar1.Value = 0;
-                lPercentage.Text = "0 %";
-                index = 0;
-                list = 0;
-                lIndexList.Text = "0/0";
-                panel2.Hide();
-                serialPort1.Write(Convert.ToChar(9).ToString());
-                data = "";
-                bSendFile.Enabled = true;
-                bFileSend.Enabled = true;
-                ReceiveData = "";
+                catch
+                {
+                    SendBack = Convert.ToChar(7).ToString();
+                    serialPort1.Write(SendBack);
+                    bSendFile.Enabled = true;
+                    progressBar1.Value = 0;
+                    lPercentage.Text = "0 %";
+                    index = 0;
+                    list = 0;
+                    lIndexList.Text = "0/0";
+                    panel2.Hide();
+                    data = "";
+                    ReceiveData = "";
+                }
+               
             }
             else if (ReceiveData.Contains(Convert.ToChar(9).ToString()))
             {
@@ -655,6 +672,7 @@ namespace Serial_Port_Communications_Program
             bSendFile.Enabled = true;
             progressBar1.Value = 0;
             lPercentage.Text = "0 %";
+            flag *= -1;
             panel2.Hide();
         }
 
