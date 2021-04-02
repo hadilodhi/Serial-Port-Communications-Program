@@ -370,12 +370,19 @@ namespace Serial_Port_Communications_Program
             {
                 progressBar1.Value = 2;
                 lPercentage.Text = "2 %";
-                FileStream stream = File.OpenRead(OpenFile);
-                fileBytes = new byte[stream.Length];
-                stream.Read(fileBytes, 0, fileBytes.Length);
-                stream.Close();
-                SendData = Convert.ToBase64String(fileBytes);
-                BreakupData();
+                try
+                {
+                    FileStream stream = File.OpenRead(OpenFile);
+                    fileBytes = new byte[stream.Length];
+                    stream.Read(fileBytes, 0, fileBytes.Length);
+                    stream.Close();
+                    SendData = Convert.ToBase64String(fileBytes);
+                    BreakupData();
+                }
+                catch
+                {
+
+                }
                 ReceiveData = "";
             }
             else if (ReceiveData.Contains(Convert.ToChar(7).ToString()))
